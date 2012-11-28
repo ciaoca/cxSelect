@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery Select 多级联动 - 前端开发仓库</title>
+<meta name="keywords" content="jquery插件,jquery select 联动,select二级联动,select三级联动,select多级联动,select省市联动">
+<meta name="description" content="一款基于jQuery的多级select联动插件，附带省市县数据，兼容主流浏览器。">
+<link href="../../css/base.css" rel="stylesheet">
+<link href="../../css/code.css" rel="stylesheet">
+</head>
+<body>
+<div id="header" class="header">
+	<p class="breadcrumb"><a href="../../">前端开发仓库</a> &raquo; <a href="../">jQuery插件</a> &raquo; <strong>Select 多级联动</strong></p>
+</div>
+<div class="content">
+	<h1>jQuery Select 多级联动</h1>
+	<ul class="intro">
+		<li><em>·</em>基于 jQuery v1.4.4</li>
+		<li><em>·</em>列表数据使用 JSON 格式</li>
+		<li><em>·</em>提供国内省市县数据（采集于2011年8月）</li>
+	</ul>
+	<div class="intro">
+		<p><a class="source_download" href="version/jquery.cxselect_20120727_1f238ec1.rar">jQuery Select 多级联动</a></p>
+	</div>
+
+	<h2>【示例】</h2>
+	<div class="intro">
+		<dl id="city_a" class="form_add">
+			<dt>省份：</dt>
+			<dd><select class="province"></select></dd>
+			<dt>城市：</dt>
+			<dd><select class="city" disabled="disabled"></select></dd>
+			<dt>地区：</dt>
+			<dd><select class="area" disabled="disabled"></select></dd>
+		</dl>
+	</div>
+
+	<h2>【示例】 - 设置默认值</h2>
+	<div class="intro">
+		<dl id="city_b" class="form_add">
+			<dt>省份：</dt>
+			<dd><select class="province" data-val="浙江"></select></dd>
+			<dt>城市：</dt>
+			<dd><select class="city" data-val="杭州" disabled="disabled"></select></dd>
+			<dt>地区：</dt>
+			<dd><select class="area" data-val="西湖区" disabled="disabled"></select></dd>
+		</dl>
+	</div>
+
+	<h2>【settings 参数说明】（可选）</h2>
+	<div class="intro">
+		<table class="manual_table table_form">
+			<thead>
+				<tr>
+					<th width="80">名称</th>
+					<th width="80">默认值</th>
+					<th>说明</th>
+				</tr>
+			</thead>
+			<tr>
+				<td>url</td>
+				<td>"js/city.js"</td>
+				<td>列表数据文件路径（josn格式）</td>
+			</tr>
+			<tr>
+				<td>select</td>
+				<td>[]</td>
+				<td>下拉框包含的 className</td>
+			</tr>
+			<tr>
+				<td>nodata</td>
+				<td>null</td>
+				<td>子级无数据时select的状态。可设置为："none"(display隐藏) | "hidden"(visibility隐藏)</td>
+			</tr>
+			<tr>
+				<td>required</td>
+				<td>false</td>
+				<td>是否为必选。设为 flase 时，会在列表头部添加 &lt;option value="0"&gt;请选择&lt;/option&gt; 选项。</td>
+			</tr>
+		</table>
+	</div>
+
+<h2>【DOM 结构】</h2>
+<div class="example">
+<pre><code class="html">&lt;!--
+select 的 class 任意取值，必须放在 id="element_id" 内部，不限层级
+如需设置 select 默认值，加上 data-val 属性，例：&lt;select class="province" data-val="浙江"&gt;&lt;/select&gt;
+--&gt;
+&lt;div id="element_id"&gt;
+	&lt;select class="province"&gt;&lt;/select&gt;
+	&lt;select class="city" disabled="disabled"&gt;&lt;/select&gt;
+	&lt;select class="area" disabled="disabled"&gt;&lt;/select&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+
+<h2>【JavaScript 调用方式】</h2>
+<div class="example">
+<pre><code class="js">// selectes 为数组形式，请注意排放顺序
+$("#element_id").cxSelect({
+	selects:["province","city","area"],
+	nodata:"none"
+});
+
+// 设置全局默认值，需在引入 &lt;script src="js/jquery.cxselect.js"&gt;&lt;/script&gt; 之后设置
+$.cxSelect.defaults.url="/js/date/city.js";
+$.cxSelect.defaults.nodata="none";
+</code></pre>
+</div>
+</div>
+<script src="../../js/jquery-1.4.4.min.js"></script>
+<script src="../../js/chili/jquery.chili-2.2.min.js"></script>
+<script src="../../js/chili/recipes.js"></script>
+<script src="js/jquery.cxSelect_v3.js"></script>
+<script>
+(function(){
+	// 加载数据列表
+	$("#city_a").cxSelect({
+		url:"js/city.min.js",
+		selects:["province","city","area"]
+	});
+
+	// 加载数据列表（设置默认值）
+	$("#city_b").cxSelect({
+		selects:["province","city","area"]
+	});
+})();
+</script>
+</body>
+</html>
