@@ -1,6 +1,6 @@
 /*!
- * cxSelect 1.0
- * date: 2012-12-05
+ * cxSelect 1.1
+ * date: 2013-02-21
  * https://github.com/ciaoca/cxSelect
  * (c) 2012 Ciaoca, http://ciaoca.com/
  */
@@ -99,7 +99,7 @@
 			select_next=select_index+1;
 			select_data=data_json;
 			for(var i=0;i<select_next;i++){
-				if(typeof(select_data[select_val[i]])=="undefined"||!select_data[i].s||!select_data[i].s.length){
+				if(typeof(select_data[select_val[i]])=="undefined"||!select_data[select_val[i]].s||!select_data[select_val[i]].s.length){
 					return;
 					break;
 				};
@@ -115,7 +115,9 @@
 					temp_html+="<option value='"+v.v+"'>"+v.n+"</option>";
 				};
 			});
-			select_arr[select_next].html(temp_html).attr("disabled",false).css({"display":"","visibility":""});
+			if(select_arr[select_next]){
+				select_arr[select_next].html(temp_html).attr("disabled",false).css({"display":"","visibility":""});
+			};
 		};
 
 		// 获取数据，初始化

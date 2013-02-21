@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>cxSelect 多级联动下拉菜单 &raquo; 在线演示 - 前端开发仓库</title>
-<link rel="stylesheet" href="css/jquery.cxcolor.css">
 <style>
 body{padding:20px;background:#ddd;font:14px/1.7 Arial,"\5b8b\4f53";}
 h1,h2,h3{font:bold 36px/1 "\5fae\8f6f\96c5\9ed1";}
@@ -38,6 +37,15 @@ a:hover{color:#00f;}
 		<p>城市：<select class="city cx_select" disabled="disabled" data-val="杭州"></select></p>
 		<p>地区：<select class="area cx_select" disabled="disabled" data-val="西湖区"></select></p>
 	</fieldset>
+	
+	<fieldset id="city_c">
+		<legend>多级选项</legend>
+		<p>一：<select class="first cx_select" data-val=""></select></p>
+		<p>二：<select class="second cx_select" disabled="disabled" data-val=""></select></p>
+		<p>三：<select class="third cx_select" disabled="disabled" data-val=""></select></p>
+		<p>四：<select class="fourth cx_select" disabled="disabled" data-val=""></select></p>
+		<p>五：<select class="fifth cx_select" disabled="disabled" data-val=""></select></p>
+	</fieldset>
 
 	<h2>文档</h2>
 	<ul>
@@ -50,7 +58,7 @@ a:hover{color:#00f;}
 </div>
 
 <script src="js/jquery-1.4.4.min.js"></script>
-<script src="js/jquery.cxselect.js"></script>
+<script src="js/jquery.cxselect.min.js"></script>
 <script>
 $.cxSelect.defaults.url="js/city.min.js";
 
@@ -61,6 +69,11 @@ $("#city_a").cxSelect({
 $("#city_b").cxSelect({
 	selects:["province","city","area"],
 	nodata:"none"
+});
+
+$("#city_c").cxSelect({
+	url:"js/test.js",
+	selects:["first","second","third","fourth","fifth"]
 });
 </script>
 </body>
