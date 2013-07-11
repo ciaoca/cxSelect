@@ -2,7 +2,7 @@
 
 cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品分类等联动菜单。
 
-版本：
+**版本：**
 
 * jQuery v1.4.4+
 * jQuery cxSelect v1.2
@@ -60,15 +60,15 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
     </tr>
 </table>
 
-##使用方法
+##【使用方法】
 
-载入 JavaScript 文件
+###载入 JavaScript 文件
 ```html
 <script src="js/jquery.js"></script> 
 <script src="js/jquery.cxselect.js"></script>
 ```
 
-DOM 结构
+###DOM 结构
 ```html
 <!--
 select 必须放在 id="element_id" 内部，不限层级 
@@ -82,17 +82,15 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 </div>
 ```
 
-调用 cxSelect
+###调用 cxSelect
 ``` javascript
 // selectes 为数组形式，请注意顺序 
 $("#element_id").cxSelect({
     selects:["province","city","area"],
     nodata:"none"
-}); 
-```
+});
 
-// 设置全局默认值，需在引入 **\<script src="js/jquery.cxselect.js"\>\</script\>** 之后，调用之前设置
-``` javascript
+// 设置全局默认值，需在引入 <script src="js/jquery.cxselect.js"></script> 之后，调用之前设置
 $.cxSelect.defaults.url="/js/city.min.js";
 $.cxSelect.defaults.nodata="none";
 ```
