@@ -1,8 +1,10 @@
 /*!
- * cxSelect 1.1
- * date: 2013-02-21
+ * cxSelect 1.2
+ * http://code.ciaoca.com/
  * https://github.com/ciaoca/cxSelect
- * (c) 2012 Ciaoca, http://ciaoca.com/
+ * E-mail: ciaoca@gmail.com
+ * Released under the MIT license
+ * Date: 2013-07-10
  */
 (function($){
 	$.fn.cxSelect=function(settings){
@@ -12,7 +14,6 @@
 
 		var box_obj=this;
 		var select_arr=[];
-		var select_prehtml=(settings.required) ? "" : "<option value='0'>请选择</option>";
 		var select_sum=settings.selects.length;
 		var data_json;
 		var temp_html;
@@ -20,35 +21,37 @@
 		var getIndex=function(n){
 			return (settings.required) ? n : n-1;
 		};
-		
-		var init_val=[];
-		var init_timeout=function(n){
-			if(!init_val.length){return;};
-			var _n=n||0;
-			if(_n<init_val.length){
-				setTimeout(function(){
-					select_arr[_n].val(select_arr[_n].data("val")).trigger("change");
-					_n++;
-					init_timeout(_n);
-				},1);
-			};
-		};
 
+		// 获取下拉框内容
+		var getNewOption=function(json,title){
+			var _title=title||"请选择";
+			var _html;
+
+			if(!settings.required){
+				_html="<option value='0'>"+_title+"</option>";
+			};
+
+			$.each(json,function(i,v){
+				if(typeof(v.v)=="undefined"||!v.v){
+					_html+="<option value='"+v.n+"'>"+v.n+"</option>";
+				}else{
+					_html+="<option value='"+v.v+"'>"+v.n+"</option>";
+				};
+			});
+
+			return _html;
+		};
+		
 		// 初始化
+		var init_val=[];
+
 		var init=function(){
 			for(var i=0;i<select_sum;i++){
 				select_arr.push(box_obj.find("select."+settings.selects[i]));
 			};
 
 			// 遍历数据写入第一个下拉选框
-			temp_html=select_prehtml;
-			$.each(data_json,function(i,v){
-				if(typeof(v.v)=="undefined"||!v.v){
-					temp_html+="<option value='"+v.n+"'>"+v.n+"</option>";
-				}else{
-					temp_html+="<option value='"+v.v+"'>"+v.n+"</option>";
-				};
-			});
+			temp_html=getNewOption(data_json,select_arr[0].data("title"));
 			select_arr[0].html(temp_html);
 
 			for(var i=0;i<select_sum;i++){
@@ -69,9 +72,20 @@
 			init_timeout();
 		};
 
+		var init_timeout=function(n){
+			if(!init_val.length){return;};
+			var _n=n||0;
+			if(_n<init_val.length){
+				setTimeout(function(){
+					select_arr[_n].val(select_arr[_n].data("val")).trigger("change");
+					_n++;
+					init_timeout(_n);
+				},1);
+			};
+		};
+
 		// 改变选择时
 		var selectChange=function(name){
-			//var _that=$(obj);
 			var select_val=[];
 			var select_index;
 			var select_next;
@@ -107,15 +121,8 @@
 			};
 
 			// 遍历数据写入下拉选框
-			temp_html=select_prehtml;
-			$.each(select_data,function(i,v){
-				if(typeof(v.v)=="undefined"||!v.v){
-					temp_html+="<option value='"+v.n+"'>"+v.n+"</option>";
-				}else{
-					temp_html+="<option value='"+v.v+"'>"+v.n+"</option>";
-				};
-			});
 			if(select_arr[select_next]){
+				temp_html=getNewOption(select_data,select_arr[select_next].data("title"));
 				select_arr[select_next].html(temp_html).attr("disabled",false).css({"display":"","visibility":""});
 			};
 		};

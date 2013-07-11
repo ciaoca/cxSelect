@@ -24,27 +24,29 @@ a:hover{color:#00f;}
 	<form id="city_a" action="getcity.php" method="post">
 		<fieldset>
 			<legend>默认</legend>
-			<p>省份：<select class="province cx_select" name="province"></select></p>
-			<p>城市：<select class="city cx_select" disabled="disabled" name="city"></select></p>
-			<p>地区：<select class="area cx_select" disabled="disabled" name="area"></select></p>
+			<p>省份：<select class="province" name="province"></select></p>
+			<p>城市：<select class="city" disabled="disabled" name="city"></select></p>
+			<p>地区：<select class="area" disabled="disabled" name="area"></select></p>
 			<p><button type="submit">提 交</button></p>
 		</fieldset>
 	</form>
 
 	<fieldset id="city_b">
-		<legend>设置默认值</legend>
-		<p>省份：<select class="province cx_select" data-val="浙江"></select></p>
-		<p>城市：<select class="city cx_select" disabled="disabled" data-val="杭州"></select></p>
-		<p>地区：<select class="area cx_select" disabled="disabled" data-val="西湖区"></select></p>
+		<legend>设置默认值及选项标题</legend>
+		<p>所在地区：
+			<select class="province" data-val="浙江" data-title="选择省"></select>
+			<select class="city" data-val="杭州" data-title="选择市" disabled="disabled"></select>
+			<select class="area" data-val="西湖区" data-title="选择地区" disabled="disabled"></select>
+		</p>
 	</fieldset>
 	
 	<fieldset id="city_c">
 		<legend>多级选项</legend>
-		<p>一：<select class="first cx_select" data-val=""></select></p>
-		<p>二：<select class="second cx_select" disabled="disabled" data-val=""></select></p>
-		<p>三：<select class="third cx_select" disabled="disabled" data-val=""></select></p>
-		<p>四：<select class="fourth cx_select" disabled="disabled" data-val=""></select></p>
-		<p>五：<select class="fifth cx_select" disabled="disabled" data-val=""></select></p>
+		<p>一：<select class="first"></select></p>
+		<p>二：<select class="second" disabled="disabled"></select></p>
+		<p>三：<select class="third" disabled="disabled"></select></p>
+		<p>四：<select class="fourth" disabled="disabled"></select></p>
+		<p>五：<select class="fifth" disabled="disabled"></select></p>
 	</fieldset>
 
 	<h2>文档</h2>
@@ -54,7 +56,8 @@ a:hover{color:#00f;}
 	</ul>
 	
 	<h2>作者</h2>
-	<p>Copyright(c) 2012 Ciaoca, http://ciaoca.com/</p>
+	<p><a target="_blank" href="http://ciaoca.com/">http://ciaoca.com/</a></p>
+	<p>Released under the MIT license</p>
 </div>
 
 <script src="js/jquery-1.4.4.min.js"></script>
