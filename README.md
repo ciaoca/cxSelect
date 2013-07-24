@@ -60,6 +60,26 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
     </tr>
 </table>
 
+##【json 参数说明】
+<table>
+    <tr>
+        <th width="120">名称</th>
+        <th>说明</th>
+    </tr>
+    <tr>
+        <td>n</td>
+        <td>显示值</td>
+    </tr>
+    <tr>
+        <td>v</td>
+        <td>option的value值,如果没有该属性，将使用n值</td>
+    </tr>
+    <tr>
+        <td>s</td>
+        <td>子select属性</td>
+    </tr>
+</table>
+
 ##【使用方法】
 
 ###载入 JavaScript 文件
