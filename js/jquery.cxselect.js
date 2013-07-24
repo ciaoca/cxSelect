@@ -128,15 +128,23 @@
 		};
 
 		// 获取数据，初始化
-		$.getJSON(settings.url,function(json){
-			data_json=json;
+		if(settings.url){
+			$.getJSON(settings.url,function(json){
+				data_json=json;
+				init();
+			});
+		}
+		else if(settings.data.length>0){
+			data_json = settings.data;
 			init();
-		});
+		}
+		
 	};
 	
 	// 默认值
 	$.cxSelect={defaults:{
-		url:"js/city.js",	// 列表数据文件路径（josn格式）
+		url:null,	// 列表数据文件路径（josn格式）
+		data:[],
 		selects:[],			// 下拉选框组
 		nodata:null,		// 无数据状态
 		required:false		// 是否为必选
