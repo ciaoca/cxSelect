@@ -28,7 +28,7 @@
 			var _html;
 
 			if(!settings.required){
-				_html="<option value='0'>"+_title+"</option>";
+				_html="<option value=''>"+_title+"</option>";
 			};
 
 			$.each(json,function(i,v){
@@ -51,7 +51,7 @@
 			};
 
 			// 遍历数据写入第一个下拉选框
-			temp_html=getNewOption(data_json,select_arr[0].data("title"));
+			temp_html=getNewOption(data_json,select_arr[0].attr("title"));
 			select_arr[0].html(temp_html);
 
 			for(var i=0;i<select_sum;i++){
@@ -122,7 +122,7 @@
 
 			// 遍历数据写入下拉选框
 			if(select_arr[select_next]){
-				temp_html=getNewOption(select_data,select_arr[select_next].data("title"));
+				temp_html=getNewOption(select_data,select_arr[select_next].attr("title"));
 				select_arr[select_next].html(temp_html).attr("disabled",false).css({"display":"","visibility":""});
 			};
 		};
@@ -143,8 +143,8 @@
 	
 	// 默认值
 	$.cxSelect={defaults:{
-		url:null,	// 列表数据文件路径（josn格式）
-		data:[],
+		url:null,			// 列表数据文件路径（josn格式）
+		data:[],    		// 列表数据
 		selects:[],			// 下拉选框组
 		nodata:null,		// 无数据状态
 		required:false		// 是否为必选
