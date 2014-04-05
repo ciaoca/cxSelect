@@ -2,7 +2,7 @@
 
 cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品分类等联动菜单。
 
-列表数据通过 ajax 获取（所以需要在服务器环境运行），使用 json 格式
+列表数据通过 AJAX 获取（需要在服务器环境运行），也可以使用变量自定义，数据内容使用 JSON 格式。
 
 提供国内省市县数据（数据来源：<a href="https://github.com/basecss/cityData" target="_blank">basecss/cityData</a> Date: 2014.03.31）
 
@@ -29,7 +29,7 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
     <tr>
         <td>url</td>
         <td>null</td>
-        <td>列表数据文件路径（URL） | 变量（值为 json 的结构）</td>
+        <td>列表数据文件路径（URL） | 变量（值为 JSON 的结构）</td>
     </tr>
     <tr>
         <td>nodata</td>
