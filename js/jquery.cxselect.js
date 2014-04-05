@@ -1,144 +1,178 @@
 /*!
- * cxSelect 1.2
+ * cxSelect 1.3
  * http://code.ciaoca.com/
  * https://github.com/ciaoca/cxSelect
  * E-mail: ciaoca@gmail.com
  * Released under the MIT license
- * Date: 2013-07-10
+ * Date: 2013-04-05
  */
 (function($){
-	$.fn.cxSelect=function(settings){
-		if(this.length<1){return;};
-		settings=$.extend({},$.cxSelect.defaults,settings);
-		if(!settings.selects.length){return;};
+	$.fn.cxSelect = function(settings){
+		
+		var cxSelect = {
+			settings : $.extend({}, $.cxSelect.defaults, settings),
+			dom : {
+				box : this
+			}
+		};
+		
+		cxSelect.init = function(){
+			var _this = this;
 
-		var box_obj=this;
-		var select_arr=[];
-		var select_sum=settings.selects.length;
-		var data_json;
-		var temp_html;
+			// 父容器不存在、未设置选择器组
+			if (!_this.dom.box.length) {return};
+			if (!_this.settings.selects.length) {return};
+			
+			_this.selectArray = [];
+			_this.selectSum = _this.settings.selects.length;
+			
+			for (var i = 0; i < _this.selectSum; i++) {
+				if (!_this.dom.box.find('select.' + _this.settings.selects[i])) {break};
 
-		var getIndex=function(n){
-			return (settings.required) ? n : n-1;
+				_this.selectArray.push(_this.dom.box.find('select.' + _this.settings.selects[i]));
+			};
+
+			_this.selectSum = _this.selectArray.length;
+
+			// 设置的选择器组不存在
+			if (!_this.selectSum) {return};
+
+			// 设置 URL，通过 Ajax 获取数据
+			if (typeof _this.settings.url === 'string') {
+				$.getJSON(_this.settings.url, function(json){
+					_this.dataJson = json;
+					_this.buildContent();
+				});
+
+			// 设置自定义数据
+			} else if (typeof _this.settings.url === 'object') {
+				_this.dataJson = _this.settings.url;
+				_this.buildContent();
+			};
+		};
+
+		// 兼容旧浏览器的方法 
+		cxSelect.isArray = function(value){
+			if (typeof Array.isArray === "function") {
+				return Array.isArray(value);
+			} else {
+				return Object.prototype.toString.call(value) === "[object Array]";
+			}
+		}
+
+		cxSelect.getIndex = function(n){
+			return (this.settings.required) ? n : n - 1;
 		};
 
 		// 获取下拉框内容
-		var getNewOption=function(json,title){
-			var _title=title||"请选择";
+		cxSelect.getNewOptions = function(json, title){
+			title = title || this.settings.title;
 			var _html;
 
-			if(!settings.required){
-				_html="<option value='0'>"+_title+"</option>";
+			if(!this.settings.required){
+				_html='<option value="0">' + title + '</option>';
 			};
 
-			$.each(json,function(i,v){
-				if(typeof(v.v)=="undefined"||!v.v){
-					_html+="<option value='"+v.n+"'>"+v.n+"</option>";
+			$.each(json, function(i, v){
+				if(typeof(v.v) === 'string' || typeof(v.v) === 'number'){
+					_html += '<option value="'+v.v+'">' + v.n + '</option>';
 				}else{
-					_html+="<option value='"+v.v+"'>"+v.n+"</option>";
+					_html += '<option value="'+v.n+'">' + v.n + '</option>';
 				};
 			});
 
 			return _html;
 		};
-		
-		// 初始化
-		var init_val=[];
 
-		var init=function(){
-			for(var i=0;i<select_sum;i++){
-				select_arr.push(box_obj.find("select."+settings.selects[i]));
-			};
+		// 构建选框内容
+		cxSelect.buildContent = function(){
+			var _this = this;
 
-			// 遍历数据写入第一个下拉选框
-			temp_html=getNewOption(data_json,select_arr[0].data("title"));
-			select_arr[0].html(temp_html);
-
-			for(var i=0;i<select_sum;i++){
-				if(select_arr[i].data("val")){
-					init_val.push(i);
-				}else if(select_arr[i].attr("disabled")){
-					if(settings.nodata=="none"){
-						select_arr[i].css("display","none");
-					}else if(settings.nodata=="hidden"){
-						select_arr[i].css("visibility","hidden");
-					};
-				};
-			};
-			box_obj.delegate("select","change",function(){
-				selectChange(this.className);
+			_this.dom.box.on('change', 'select', function(){
+				_this.selectChange(this.className);
 			});
-			
-			init_timeout();
+
+			var _html = _this.getNewOptions(_this.dataJson, _this.selectArray[0].data('title'));
+			_this.selectArray[0].html(_html).prop('disabled', false).trigger('change');
+
+			_this.setDefaultValue();
 		};
 
-		var init_timeout=function(n){
-			if(!init_val.length){return;};
-			var _n=n||0;
-			if(_n<init_val.length){
+		// 设置默认值
+		cxSelect.setDefaultValue = function(n){
+			var _this = this;
+			n = n || 0;
+
+			if (n >= _this.selectSum) {return};
+
+			if (_this.selectArray[n].data('val') && _this.selectArray[n].data('val').length) {
 				setTimeout(function(){
-					select_arr[_n].val(select_arr[_n].data("val")).trigger("change");
-					_n++;
-					init_timeout(_n);
-				},1);
+					_this.selectArray[n].val(_this.selectArray[n].data('val')).trigger('change');
+					n++;
+					_this.setDefaultValue(n);
+				}, 1);
 			};
 		};
 
-		// 改变选择时
-		var selectChange=function(name){
-			var select_val=[];
-			var select_index;
-			var select_next;
-			var select_data;
+		// 改变选择时的处理
+		cxSelect.selectChange = function(name){
+			name = name.replace(/ /g,',');
+			name = ',' + name + ',';
 
-			// 获取当前 select 的位置
-			for(var i=0;i<select_sum;i++){
-				select_val.push(getIndex(select_arr[i].get(0).selectedIndex));
+			var selectVal=[];
+			var selectIndex;
+			var selectNext;
+			var selectData;
+			var _html;
 
-				if(select_index||i>select_index){
-					select_arr[i].empty().attr("disabled",true);
-					if(settings.nodata=="none"){
-						select_arr[i].css("display","none");
-					}else if(settings.nodata=="hidden"){
-						select_arr[i].css("visibility","hidden");
+			// 获取当前 select 位置、选择值，并清空后面的 select
+			for (var i = 0; i < this.selectSum; i++) {
+				selectVal.push(this.getIndex(this.selectArray[i].get(0).selectedIndex));
+
+				if (typeof selectIndex === 'number' && i > selectIndex) {
+					this.selectArray[i].empty().prop('disabled', true);
+
+					if (this.settings.nodata === 'none') {
+						this.selectArray[i].css('display', 'none');
+					} else if(this.settings.nodata === 'hidden') {
+						this.selectArray[i].css('visibility', 'hidden');
 					};
 				};
-				
-				if(name.indexOf(settings.selects[i])>-1){
-					select_index=i;
+
+				if (name.indexOf(',' + this.settings.selects[i] + ',') > -1) {
+					selectIndex = i;
 				};
 			};
 
 			// 获取下级的列表数据
-			select_next=select_index+1;
-			select_data=data_json;
-			for(var i=0;i<select_next;i++){
-				if(typeof(select_data[select_val[i]])=="undefined"||!select_data[select_val[i]].s||!select_data[select_val[i]].s.length){
+			selectNext = selectIndex + 1;
+			selectData = this.dataJson;
+
+			for (var i = 0; i < selectNext; i++){
+				if (typeof selectData[selectVal[i]]  === 'undefined' || this.isArray(selectData[selectVal[i]].s) === false || !selectData[selectVal[i]].s.length) {
 					return;
-					break;
 				};
-				select_data=select_data[select_val[i]].s;
+				selectData = selectData[selectVal[i]].s;
 			};
 
 			// 遍历数据写入下拉选框
-			if(select_arr[select_next]){
-				temp_html=getNewOption(select_data,select_arr[select_next].data("title"));
-				select_arr[select_next].html(temp_html).attr("disabled",false).css({"display":"","visibility":""});
+			if (this.selectArray[selectNext]) {
+				_html = this.getNewOptions(selectData, this.selectArray[selectNext].data('title'));
+				this.selectArray[selectNext].html(_html).prop('disabled', false).css({'display':'', 'visibility':''}).trigger('change');
 			};
 		};
-
-		// 获取数据，初始化
-		$.getJSON(settings.url,function(json){
-			data_json=json;
-			init();
-		});
+		
+		cxSelect.init();
 	};
-	
+
 	// 默认值
-	$.cxSelect={defaults:{
-		url:"js/city.js",	// 列表数据文件路径（josn格式）
-		selects:[],			// 下拉选框组
-		nodata:null,		// 无数据状态
-		required:false		// 是否为必选
-	}};
+	$.cxSelect = {
+		defaults : {
+			selects : [],			// 下拉选框组
+			url : null,				// 列表数据文件路径（josn 格式）
+			nodata : null,			// 无数据状态
+			required : false,		// 是否为必选
+			title : '请选择'			// 下拉选框的标题
+		}
+	};
 })(jQuery);
