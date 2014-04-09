@@ -39,7 +39,7 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
     <tr>
         <td>required</td>
         <td>false</td>
-        <td>是否为必选。设为 flase 时，会在列表头部添加 &lt;option value="0"&gt;请选择&lt;/option&gt; 选项，其中“请选择”可以通过参数 title 来设置。</td>
+        <td>是否为必选。设为 flase 时，会在列表头部添加 &lt;option value="0"&gt;请选择&lt;/option&gt。</td>
     </tr>
     <tr>
         <td>firstTitle</td>
@@ -56,7 +56,7 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 ##【data 属性参数】
 <table>
     <tr>
-        <th width="120">名称</th>
+        <th width="160">名称</th>
         <th>说明</th>
     </tr>
     <tr>
@@ -130,7 +130,7 @@ $("#element_id").cxSelect({
 
 // 设置全局默认值，需在引入 <script src="jquery.cxselect.js"></script> 之后，调用之前设置
 $.cxSelect.defaults.url = "cityData.min.json"; // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
-$.cxSelect.defaults.nodata="none";
+$.cxSelect.defaults.nodata = "none";
 ```
 
 
