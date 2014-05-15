@@ -1,10 +1,10 @@
 /*!
- * cxSelect 1.3.1
+ * cxSelect 1.3.2
  * http://code.ciaoca.com/
  * https://github.com/ciaoca/cxSelect
  * E-mail: ciaoca@gmail.com
  * Released under the MIT license
- * Date: 2013-04-09
+ * Date: 2013-05-15
  */
 (function($){
 	$.fn.cxSelect = function(settings){
@@ -66,24 +66,30 @@
 
 		// 获取下拉框内容
 		cxSelect.getNewOptions = function(elemJquery, json){
+			if (!elemJquery) {return};
+			
 			var _title = this.settings.firstTitle;
 			var _value = this.settings.firstValue;
-			var _html;
-			
-			if (typeof elemJquery.data('firstTitle') === 'string' || typeof elemJquery.data('firstTitle') === 'number') {
-				_title = elemJquery.data('firstTitle');
+			var _dataTitle = elemJquery.data('firstTitle');
+			var _dataValue = elemJquery.data('firstValue');
+			var _html = '';
+
+			if (typeof _dataTitle === 'string' || typeof _dataTitle === 'number' || typeof _dataTitle === 'boolean') {
+				_title = _dataTitle.toString();
 			};
-			if (typeof elemJquery.data('firstValue') === 'string' || typeof elemJquery.data('firstValue') === 'number') {
-				_value = elemJquery.data('firstValue');
+
+			if (typeof _dataValue === 'string' || typeof _dataValue === 'number' || typeof _dataValue === 'boolean') {
+				_value = _dataValue.toString();
 			};
-			if(!this.settings.required){
+
+			if (!this.settings.required) {
 				_html='<option value="' + _value + '">' + _title + '</option>';
 			};
 
 			$.each(json, function(i, v){
-				if(typeof(v.v) === 'string' || typeof(v.v) === 'number'){
+				if (typeof(v.v) === 'string' || typeof(v.v) === 'number' || typeof(v.v) === 'boolean') {
 					_html += '<option value="'+v.v+'">' + v.n + '</option>';
-				}else{
+				} else {
 					_html += '<option value="'+v.n+'">' + v.n + '</option>';
 				};
 			});
@@ -107,14 +113,20 @@
 
 		// 设置默认值
 		cxSelect.setDefaultValue = function(n){
-			var _this = this;
 			n = n || 0;
 
-			if (n >= _this.selectSum) {return};
+			var _this = this;
+			var _value;
 
-			if (_this.selectArray[n].data('value') && _this.selectArray[n].data('value').length) {
+			if (n >= _this.selectSum || !_this.selectArray[n]) {return};
+
+			_value = _this.selectArray[n].data('value');
+
+			if (typeof _value === 'string' || typeof _value === 'number' || typeof _value === 'boolean') {
+				_value = _value.toString();
+
 				setTimeout(function(){
-					_this.selectArray[n].val(_this.selectArray[n].data('value')).trigger('change');
+					_this.selectArray[n].val(_value).trigger('change');
 					n++;
 					_this.setDefaultValue(n);
 				}, 1);
