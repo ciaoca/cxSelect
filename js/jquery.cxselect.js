@@ -1,31 +1,83 @@
 /*!
- * cxSelect 1.3.2
- * http://code.ciaoca.com/
- * https://github.com/ciaoca/cxSelect
- * E-mail: ciaoca@gmail.com
- * Released under the MIT license
- * Date: 2013-05-15
+ * jQuery cxSelect
+ * @name jquery.cxselect.js
+ * @version 1.3.3
+ * #date 2013-10-20
+ * @author ciaoca
+ * @email ciaoca@gmail.com
+ * @site https://github.com/ciaoca/cxSelect
+ * @license Released under the MIT license
  */
-(function($){
-	$.fn.cxSelect = function(settings){
-		
+(function(factory){
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], factory);
+    } else {
+        factory(jQuery);
+    };
+}(function($){
+	$.cxSelect = function(settings){
+		var obj;
+		var settings;
 		var cxSelect = {
-			settings : $.extend({}, $.cxSelect.defaults, settings),
-			dom : {
-				box : this
-			}
+			dom: {},
+			api: {}
 		};
-		
+
+		// 检测是否为 DOM 元素
+		var isElement = function(o){
+			if(o && (typeof HTMLElement === 'function' || typeof HTMLElement === 'object') && o instanceof HTMLElement) {
+				return true;
+			} else {
+				return (o && o.nodeType && o.nodeType === 1) ? true : false;
+			};
+		};
+
+		// 检测是否为 jQuery 对象
+		var isJquery = function(o){
+			return (o && o.length && (typeof jQuery === 'function' || typeof jQuery === 'object') && o instanceof jQuery) ? true : false;
+		};
+
+		// 检测是否为数组
+		var isArray = function(o){
+			if(!Array.isArray) {
+				return Object.prototype.toString.call(o) === "[object Array]";
+			} else {
+				return Array.isArray(o);
+			};
+		};
+
+		// 分配参数
+		for (var i = 0, l = arguments.length; i < l; i++) {
+			if (isJquery(arguments[i])) {
+				obj = arguments[i];
+			} else if (isElement(arguments[i])) {
+				obj = $(arguments[i]);
+			} else if (typeof arguments[i] === 'object') {
+				settings = arguments[i];
+			};
+		};
+
+		if (obj.length < 1) {return};
+
 		cxSelect.init = function(){
 			var _this = this;
 
-			// 父容器不存在、未设置选择器组
-			if (!_this.dom.box.length) {return};
+			_this.dom.box = obj;
+
+			_this.settings = $.extend({}, $.cxSelect.defaults, settings, {
+				url: _this.dom.box.data('url'),
+				nodata: _this.dom.box.data('nodata'),
+				required: _this.dom.box.data('required'),
+				firstTitle: _this.dom.box.data('firstTitle'),
+				firstValue: _this.dom.box.data('firstValue')
+			});
+
+			// 未设置选择器组
 			if (!_this.settings.selects.length) {return};
-			
+
 			_this.selectArray = [];
 			_this.selectSum = _this.settings.selects.length;
-			
+
 			for (var i = 0; i < _this.selectSum; i++) {
 				if (!_this.dom.box.find('select.' + _this.settings.selects[i])) {break};
 
@@ -51,21 +103,12 @@
 			};
 		};
 
-		// 兼容旧浏览器的方法 
-		cxSelect.isArray = function(value){
-			if (typeof Array.isArray === "function") {
-				return Array.isArray(value);
-			} else {
-				return Object.prototype.toString.call(value) === "[object Array]";
-			}
-		}
-
 		cxSelect.getIndex = function(n){
 			return (this.settings.required) ? n : n - 1;
 		};
 
 		// 获取下拉框内容
-		cxSelect.getNewOptions = function(elemJquery, json){
+		cxSelect.getNewOptions = function(elemJquery, data){
 			if (!elemJquery) {return};
 			
 			var _title = this.settings.firstTitle;
@@ -86,7 +129,7 @@
 				_html='<option value="' + _value + '">' + _title + '</option>';
 			};
 
-			$.each(json, function(i, v){
+			$.each(data, function(i, v){
 				if (typeof(v.v) === 'string' || typeof(v.v) === 'number' || typeof(v.v) === 'boolean') {
 					_html += '<option value="'+v.v+'">' + v.n + '</option>';
 				} else {
@@ -168,7 +211,7 @@
 			selectData = this.dataJson;
 
 			for (var i = 0; i < selectNext; i++){
-				if (typeof selectData[selectValues[i]]  === 'undefined' || this.isArray(selectData[selectValues[i]].s) === false || !selectData[selectValues[i]].s.length) {
+				if (typeof selectData[selectValues[i]]  === 'undefined' || Array.isArray(selectData[selectValues[i]].s) === false || !selectData[selectValues[i]].s.length) {
 					return;
 				};
 				selectData = selectData[selectValues[i]].s;
@@ -182,17 +225,24 @@
 		};
 		
 		cxSelect.init();
+
+		return this;
 	};
 
 	// 默认值
-	$.cxSelect = {
-		defaults : {
-			selects : [],			// 下拉选框组
-			url : null,				// 列表数据文件路径（josn 格式）
-			nodata : null,			// 无数据状态
-			required : false,		// 是否为必选
-			firstTitle : '请选择',	// 下拉选框的标题
-			firstValue : '0'		// 下拉选框的值
-		}
+	$.cxSelect.defaults = {
+		selects: [],			// 下拉选框组
+		url: null,				// 列表数据文件路径，或设为对象
+		nodata: null,			// 无数据状态
+		required: false,		// 是否为必选
+		firstTitle: '请选择',	// 第一个选项选项的标题
+		firstValue: '0'			// 第一个选项的值
 	};
-})(jQuery);
+
+	$.fn.cxSelect = function(settings, callback){
+		this.each(function(i){
+			$.cxSelect(this, settings, callback);
+		});
+		return this;
+	};
+}));
