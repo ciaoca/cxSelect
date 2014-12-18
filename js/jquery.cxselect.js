@@ -1,8 +1,8 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.3.3
- * #date 2013-10-20
+ * @version 1.3.4
+ * #date 2013-12-18
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
