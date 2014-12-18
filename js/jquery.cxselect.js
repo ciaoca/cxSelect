@@ -211,7 +211,7 @@
 			selectData = this.dataJson;
 
 			for (var i = 0; i < selectNext; i++){
-				if (typeof selectData[selectValues[i]]  === 'undefined' || Array.isArray(selectData[selectValues[i]].s) === false || !selectData[selectValues[i]].s.length) {
+				if (typeof selectData[selectValues[i]]  === 'undefined' || isArray(selectData[selectValues[i]].s) === false || !selectData[selectValues[i]].s.length) {
 					return;
 				};
 				selectData = selectData[selectValues[i]].s;
