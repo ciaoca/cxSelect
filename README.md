@@ -72,8 +72,8 @@ $.cxSelect.defaults.nodata = 'none';
     <td>url</td>
     <td>null</td>
     <td>
-      整合列表数据接口地址（URL） | 数组 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)。数据使用 JSON 格式。
-      每个选框的内容使用各自的接口地址，详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
+      整合列表数据接口地址（URL） | 数组 <a href="http://code.ciaoca.com/jquery/cxselect/demo/custom.html">[DEMO]</a>。数据使用 JSON 格式。
+      每个选框的内容使用各自的接口地址，详见 <a href="http://code.ciaoca.com/jquery/cxselect/demo/oneself.html">[DEMO]</a>
     </td>
   </tr>
   <tr>
@@ -207,4 +207,4 @@ $.cxSelect.defaults.nodata = 'none';
 </table>
 
 ##自定义数据
-详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
+详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
