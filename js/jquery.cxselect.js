@@ -1,248 +1,279 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.3.4
- * #date 2013-12-18
+ * @version 1.3.5
+ * @date 2015-10-30
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
  * @license Released under the MIT license
  */
-(function(factory){
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], factory);
-    } else {
-        factory(jQuery);
+(function(factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory);
+  } else {
+    factory(window.jQuery || window.Zepto || window.$);
+  };
+}(function($) {
+  $.cxSelect = function() {
+    var cxSelect = {
+      dom: {},
+      api: {}
     };
-}(function($){
-	$.cxSelect = function(settings){
-		var obj;
-		var settings;
-		var cxSelect = {
-			dom: {},
-			api: {}
-		};
 
-		// 检测是否为 DOM 元素
-		var isElement = function(o){
-			if(o && (typeof HTMLElement === 'function' || typeof HTMLElement === 'object') && o instanceof HTMLElement) {
-				return true;
-			} else {
-				return (o && o.nodeType && o.nodeType === 1) ? true : false;
-			};
-		};
+    cxSelect.init = function() {
+      var self = this;
+      var _settings;
 
-		// 检测是否为 jQuery 对象
-		var isJquery = function(o){
-			return (o && o.length && (typeof jQuery === 'function' || typeof jQuery === 'object') && o instanceof jQuery) ? true : false;
-		};
+      // 检测是否为 DOM 元素
+      var _isElement = function(o) {
+        if(o && (typeof HTMLElement === 'function' || typeof HTMLElement === 'object') && o instanceof HTMLElement) {
+          return true;
+        } else {
+          return (o && o.nodeType && o.nodeType === 1) ? true : false;
+        };
+      };
 
-		// 检测是否为数组
-		var isArray = function(o){
-			if(!Array.isArray) {
-				return Object.prototype.toString.call(o) === "[object Array]";
-			} else {
-				return Array.isArray(o);
-			};
-		};
+      // 检测是否为 jQuery 对象
+      var _isJquery = function(o) {
+        return (o && o.length && (typeof jQuery === 'function' || typeof jQuery === 'object') && o instanceof jQuery) ? true : false;
+      };
 
-		// 分配参数
-		for (var i = 0, l = arguments.length; i < l; i++) {
-			if (isJquery(arguments[i])) {
-				obj = arguments[i];
-			} else if (isElement(arguments[i])) {
-				obj = $(arguments[i]);
-			} else if (typeof arguments[i] === 'object') {
-				settings = arguments[i];
-			};
-		};
+      // 分配参数
+      for (var i = 0, l = arguments.length; i < l; i++) {
+        if (_isJquery(arguments[i])) {
+          self.dom.box = arguments[i];
+        } else if (_isElement(arguments[i])) {
+          self.dom.box = $(arguments[i]);
+        } else if (typeof arguments[i] === 'object') {
+          _settings = arguments[i];
+        };
+      };
 
-		if (obj.length < 1) {return};
+      if (!self.dom.box.length) {return};
 
-		cxSelect.init = function(){
-			var _this = this;
+      self.settings = $.extend({}, $.cxSelect.defaults, _settings, {
+        url: self.dom.box.data('url'),
+        nodata: self.dom.box.data('nodata'),
+        required: self.dom.box.data('required'),
+        firstTitle: self.dom.box.data('firstTitle'),
+        firstValue: self.dom.box.data('firstValue'),
+        jsonSpace: self.dom.box.data('jsonSpace'),
+        jsonName: self.dom.box.data('jsonName'),
+        jsonValue: self.dom.box.data('jsonValue'),
+        jsonSub: self.dom.box.data('jsonSub')
+      });
 
-			_this.dom.box = obj;
+      // 未设置选择器组
+      if (!$.isArray(self.settings.selects) || !self.settings.selects.length) {return};
 
-			_this.settings = $.extend({}, $.cxSelect.defaults, settings, {
-				url: _this.dom.box.data('url'),
-				nodata: _this.dom.box.data('nodata'),
-				required: _this.dom.box.data('required'),
-				firstTitle: _this.dom.box.data('firstTitle'),
-				firstValue: _this.dom.box.data('firstValue')
-			});
+      self.selectArray = [];
 
-			// 未设置选择器组
-			if (!_this.settings.selects.length) {return};
+      for (var i = 0, l = self.settings.selects.length; i < l; i++) {
+        if (!self.dom.box.find('select.' + self.settings.selects[i])) {break};
 
-			_this.selectArray = [];
-			_this.selectSum = _this.settings.selects.length;
+        self.selectArray.push(self.dom.box.find('select.' + self.settings.selects[i]));
+      };
 
-			for (var i = 0; i < _this.selectSum; i++) {
-				if (!_this.dom.box.find('select.' + _this.settings.selects[i])) {break};
+      // 设置的选择器组不存在
+      if (!self.selectArray.length) {return};
 
-				_this.selectArray.push(_this.dom.box.find('select.' + _this.settings.selects[i]));
-			};
+      self.dom.box.on('change', 'select', function() {
+        self.selectChange(this.className);
+      });
 
-			_this.selectSum = _this.selectArray.length;
+      // 无整合数据，选项接口数据独立
+      if (!self.settings.url) {
+        self.start();
 
-			// 设置的选择器组不存在
-			if (!_this.selectSum) {return};
+      // 设置 URL，通过 Ajax 获取数据
+      } else if (typeof self.settings.url === 'string') {
+        $.getJSON(self.settings.url, function(json) {
+          self.start(json);
+        });
 
-			// 设置 URL，通过 Ajax 获取数据
-			if (typeof _this.settings.url === 'string') {
-				$.getJSON(_this.settings.url, function(json){
-					_this.dataJson = json;
-					_this.buildContent();
-				});
+      // 设置自定义数据
+      } else if (typeof self.settings.url === 'object') {
+        self.start(self.settings.url);
+      };
+    };
 
-			// 设置自定义数据
-			} else if (typeof _this.settings.url === 'object') {
-				_this.dataJson = _this.settings.url;
-				_this.buildContent();
-			};
-		};
+    cxSelect.getIndex = function(n) {
+      return (this.settings.required) ? n : n - 1;
+    };
 
-		cxSelect.getIndex = function(n){
-			return (this.settings.required) ? n : n - 1;
-		};
+    cxSelect.start = function(data) {
+      var self = this;
+      var _jsonSpace = self.settings.jsonSpace;
 
-		// 获取下拉框内容
-		cxSelect.getNewOptions = function(elemJquery, data){
-			if (!elemJquery) {return};
-			
-			var _title = this.settings.firstTitle;
-			var _value = this.settings.firstValue;
-			var _dataTitle = elemJquery.data('firstTitle');
-			var _dataValue = elemJquery.data('firstValue');
-			var _html = '';
+      self.dataJson = undefined;
 
-			if (typeof _dataTitle === 'string' || typeof _dataTitle === 'number' || typeof _dataTitle === 'boolean') {
-				_title = _dataTitle.toString();
-			};
+      if (data && typeof data === 'object') {
+        self.dataJson = data;
 
-			if (typeof _dataValue === 'string' || typeof _dataValue === 'number' || typeof _dataValue === 'boolean') {
-				_value = _dataValue.toString();
-			};
+        if (typeof _jsonSpace === 'string' && _jsonSpace.length) {
+          var _space = _jsonSpace.split('.');
 
-			if (!this.settings.required) {
-				_html='<option value="' + _value + '">' + _title + '</option>';
-			};
+          for (var i = 0, l = _space.length; i < l; i++) {
+            self.dataJson = self.dataJson[_space[i]];
+          };
+        };
+      };
 
-			$.each(data, function(i, v){
-				if (typeof(v.v) === 'string' || typeof(v.v) === 'number' || typeof(v.v) === 'boolean') {
-					_html += '<option value="'+v.v+'">' + v.n + '</option>';
-				} else {
-					_html += '<option value="'+v.n+'">' + v.n + '</option>';
-				};
-			});
+      self.getOptionData(0);
+    };
 
-			return _html;
-		};
+    // 改变选择时的处理
+    cxSelect.selectChange = function(name) {
+      if (typeof name !== 'string' || !name.length) {return};
 
-		// 构建选框内容
-		cxSelect.buildContent = function(){
-			var _this = this;
+      name = name.replace(/\s+/g, ',');
+      name = ',' + name + ',';
 
-			_this.dom.box.on('change', 'select', function(){
-				_this.selectChange(this.className);
-			});
+      var _index;
 
-			var _html = _this.getNewOptions(_this.selectArray[0], _this.dataJson);
-			_this.selectArray[0].html(_html).prop('disabled', false).trigger('change');
+      // 获取当前 select 位置
+      for (var i = 0, l = this.selectArray.length; i < l; i++) {
+        if (name.indexOf(',' + this.settings.selects[i] + ',') > -1) {
+          _index = i;
+        };
+      };
 
-			_this.setDefaultValue();
-		};
+      if (typeof _index === 'number') {
+        _index += 1;
+        this.getOptionData(_index);
+      };
+    };
 
-		// 设置默认值
-		cxSelect.setDefaultValue = function(n){
-			n = n || 0;
+    // 获取选项数据
+    cxSelect.getOptionData = function(index, opt) {
+      var self = this;
 
-			var _this = this;
-			var _value;
+      if (typeof index !== 'number' || isNaN(index) || index < 0 || index >= self.selectArray.length) {return};
 
-			if (n >= _this.selectSum || !_this.selectArray[n]) {return};
+      var _indexPrev = index - 1;
+      var _select = self.selectArray[index];
+      var _selectIndex;
+      var _selectData;
+      var _valueIndex;
+      var _query = {};
+      var _jsonSpace = typeof _select.data('jsonSpace') === 'undefined' ? self.settings.jsonSpace : _select.data('jsonSpace');
 
-			_value = _this.selectArray[n].data('value');
+      // 清空后面的 select
+      for (var i = 0, l = self.selectArray.length; i < l; i++) {
+        if (i >= index) {
+          self.selectArray[i].empty().prop('disabled', true);
 
-			if (typeof _value === 'string' || typeof _value === 'number' || typeof _value === 'boolean') {
-				_value = _value.toString();
+          if (self.settings.nodata === 'none') {
+            self.selectArray[i].css('display', 'none');
 
-				setTimeout(function(){
-					_this.selectArray[n].val(_value).trigger('change');
-					n++;
-					_this.setDefaultValue(n);
-				}, 1);
-			};
-		};
+          } else if(self.settings.nodata === 'hidden') {
+            self.selectArray[i].css('visibility', 'hidden');
+          };
+        };
+      };
 
-		// 改变选择时的处理
-		cxSelect.selectChange = function(name){
-			name = name.replace(/ /g,',');
-			name = ',' + name + ',';
+      if (typeof _select.data('url') === 'string' && _select.data('url').length) {
+        if (_indexPrev >= 0) {
+          if (!self.selectArray[_indexPrev].val().length) {return};
 
-			var selectValues=[];
-			var selectIndex;
-			var selectNext;
-			var selectData;
-			var _html;
+          _query[self.selectArray[_indexPrev].attr('name')] = self.selectArray[_indexPrev].val();
+        };
 
-			// 获取当前 select 位置、选择值，并清空后面的 select
-			for (var i = 0; i < this.selectSum; i++) {
-				selectValues.push(this.getIndex(this.selectArray[i].get(0).selectedIndex));
+        $.getJSON(_select.data('url'), _query, function(json) {
+          _selectData = json;
 
-				if (typeof selectIndex === 'number' && i > selectIndex) {
-					this.selectArray[i].empty().prop('disabled', true);
+          if (typeof _jsonSpace === 'string' && _jsonSpace.length) {
+            var _space = _jsonSpace.split('.');
 
-					if (this.settings.nodata === 'none') {
-						this.selectArray[i].css('display', 'none');
-					} else if(this.settings.nodata === 'hidden') {
-						this.selectArray[i].css('visibility', 'hidden');
-					};
-				};
+            for (var i = 0, l = _space.length; i < l; i++) {
+              _selectData = _selectData[_space[i]];
+            };
+          };
 
-				if (name.indexOf(',' + this.settings.selects[i] + ',') > -1) {
-					selectIndex = i;
-				};
-			};
+          self.buildOption(_select, _selectData);
+        });
 
-			// 获取下级的列表数据
-			selectNext = selectIndex + 1;
-			selectData = this.dataJson;
+      } else if (self.dataJson && typeof self.dataJson === 'object') {
+        _selectData = self.dataJson;
 
-			for (var i = 0; i < selectNext; i++){
-				if (typeof selectData[selectValues[i]]  === 'undefined' || isArray(selectData[selectValues[i]].s) === false || !selectData[selectValues[i]].s.length) {
-					return;
-				};
-				selectData = selectData[selectValues[i]].s;
-			};
+        for (var i = 0, l = self.selectArray.length; i < l; i++) {
+          if (i < index) {
+            _valueIndex = self.getIndex(self.selectArray[i][0].selectedIndex);
 
-			// 遍历数据写入下拉选框
-			if (this.selectArray[selectNext]) {
-				_html = this.getNewOptions(this.selectArray[selectNext], selectData);
-				this.selectArray[selectNext].html(_html).prop('disabled', false).css({'display':'', 'visibility':''}).trigger('change');
-			};
-		};
-		
-		cxSelect.init();
+            if (typeof _selectData[_valueIndex] === 'object' && $.isArray(_selectData[_valueIndex][self.settings.jsonSub]) && _selectData[_valueIndex][self.settings.jsonSub].length) {
+              _selectIndex = i;
+              _selectData = _selectData[_valueIndex][self.settings.jsonSub];
+            }
+          };
+        };
 
-		return this;
-	};
+        if (_indexPrev < 0 || _indexPrev === _selectIndex) {
+          self.buildOption(_select, _selectData);
+        };
+      }
+    };
 
-	// 默认值
-	$.cxSelect.defaults = {
-		selects: [],			// 下拉选框组
-		url: null,				// 列表数据文件路径，或设为对象
-		nodata: null,			// 无数据状态
-		required: false,		// 是否为必选
-		firstTitle: '请选择',	// 第一个选项选项的标题
-		firstValue: '0'			// 第一个选项的值
-	};
+    // 构建选项列表
+    cxSelect.buildOption = function(select, data) {
+      var self = this;
+      var _firstTitle = typeof select.data('firstTitle') === 'undefined' ? self.settings.firstTitle : String(select.data('firstTitle'));
+      var _firstValue = typeof select.data('firstValue') === 'undefined' ? self.settings.firstValue : String(select.data('firstValue'));
+      var _jsonName = typeof select.data('jsonName') === 'undefined' ? self.settings.jsonName : String(select.data('jsonName'));
+      var _jsonValue = typeof select.data('jsonValue') === 'undefined' ? self.settings.jsonValue : String(select.data('jsonValue'));
 
-	$.fn.cxSelect = function(settings, callback){
-		this.each(function(i){
-			$.cxSelect(this, settings, callback);
-		});
-		return this;
-	};
+      // 至少设置标题字段
+      if (!_jsonName.length) {return};
+
+      // 无值字段时使用标题作为值
+      if (!_jsonValue.length) {
+        _jsonValue = _jsonName;
+      };
+
+      if (!$.isArray(data)) {return};
+
+      var _html = !self.settings.required ? '<option value="' + _firstValue + '">' + _firstTitle + '</option>' : '';
+
+      $.each(data, function(i, v) {
+        _html += '<option value="' + String(v[_jsonValue]) + '">' + String(v[_jsonName]) + '</option>'
+      });
+
+      select.html(_html).prop('disabled', false).css({
+        'display': '',
+        'visibility': ''
+      });
+
+      // 初次加载设置默认值
+      if (typeof select.data('value') !== 'undefined') {
+        select.val(String(select.data('value'))).removeData('value').removeAttr('data-value');
+      };
+
+      select.trigger('change');
+    };
+    
+    cxSelect.init.apply(cxSelect, arguments);
+
+    return this;
+  };
+
+  // 默认值
+  $.cxSelect.defaults = {
+    selects: [],            // 下拉选框组
+    url: null,              // 列表数据文件路径，或设为对象
+    nodata: null,           // 无数据状态
+    required: false,        // 是否为必选
+    firstTitle: '请选择',    // 第一个选项选项的标题
+    firstValue: '',        // 第一个选项的值
+    jsonSpace: '',          // 数据命名空间
+    jsonName: 'n',          // 数据标题字段名称
+    jsonValue: '',          // 数据值字段名称
+    jsonSub: 's'            // 子集数据字段名称
+  };
+
+  $.fn.cxSelect = function(settings, callback) {
+    this.each(function(i) {
+      $.cxSelect(this, settings, callback);
+    });
+    return this;
+  };
 }));
