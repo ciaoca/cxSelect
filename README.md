@@ -12,7 +12,7 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 
 **版本：**
 * jQuery v1.7+
-* jQuery cxSelect v1.3.5
+* jQuery cxSelect v1.3.6
 
 文档：http://code.ciaoca.com/jquery/cxselect/
 
@@ -206,5 +206,7 @@ $.cxSelect.defaults.nodata = 'none';
   </tr>
 </table>
 
-##自定义数据
-详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
+##示例
+自定义数据及使用纯数组数据 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
+
+各选项数据接口独立 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)

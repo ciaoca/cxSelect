@@ -1,8 +1,8 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.3.5
- * @date 2015-10-30
+ * @version 1.3.6
+ * @date 2015-11-03
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -222,21 +222,27 @@
       var _jsonName = typeof select.data('jsonName') === 'undefined' ? self.settings.jsonName : String(select.data('jsonName'));
       var _jsonValue = typeof select.data('jsonValue') === 'undefined' ? self.settings.jsonValue : String(select.data('jsonValue'));
 
-      // 至少设置标题字段
-      if (!_jsonName.length) {return};
-
-      // 无值字段时使用标题作为值
-      if (!_jsonValue.length) {
-        _jsonValue = _jsonName;
-      };
-
       if (!$.isArray(data)) {return};
 
       var _html = !self.settings.required ? '<option value="' + _firstValue + '">' + _firstTitle + '</option>' : '';
 
-      $.each(data, function(i, v) {
-        _html += '<option value="' + String(v[_jsonValue]) + '">' + String(v[_jsonName]) + '</option>'
-      });
+      // 区分标题或值的数据
+      if (_jsonName.length) {
+        // 无值字段时使用标题作为值
+        if (!_jsonValue.length) {
+          _jsonValue = _jsonName;
+        };
+
+        for (var i = 0, l = data.length; i < l; i++) {
+          _html += '<option value="' + String(data[i][_jsonValue]) + '">' + String(data[i][_jsonName]) + '</option>';
+        };
+
+      // 数组即为值的数据
+      } else {
+        for (var i = 0, l = data.length; i < l; i++) {
+          _html += '<option value="' + String(data[i]) + '">' + String(data[i]) + '</option>';
+        };
+      };
 
       select.html(_html).prop('disabled', false).css({
         'display': '',
