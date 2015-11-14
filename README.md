@@ -6,13 +6,14 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 
 同时兼容 Zepto，方便在移动端使用。
 
-国内省市县数据来源：<a href="https://github.com/basecss/cityData" target="_blank">basecss/cityData</a> Date: 2014.03.31
+国内省市县数据来源：[basecss/cityData](https://github.com/basecss/cityData) Date: 2014.03.31
 
 全球主要城市数据来源：整理国内常用网站和软件 Date: 2014.07.29
 
 **版本：**
+
 * jQuery v1.7+
-* jQuery cxSelect v1.3.6
+* jQuery cxSelect v1.3.7
 
 文档：http://code.ciaoca.com/jquery/cxselect/
 
@@ -131,6 +132,10 @@ $.cxSelect.defaults.nodata = 'none';
     </tr>
   </thead>
   <tr>
+    <td>data-selects</td>
+    <td>下拉选框组。输入 select 的 className，使用英文逗号分隔的字符串</td>
+  </tr>
+  <tr>
     <td>data-url</td>
     <td>列表数据接口地址（此处只能设置 URL，自定义需要在参数中设置）</td>
   </tr>
@@ -183,6 +188,10 @@ $.cxSelect.defaults.nodata = 'none';
   <tr>
     <td>data-url</td>
     <td>列表数据接口地址</td>
+  </tr>
+  <tr>
+    <td>data-query-name</td>
+    <td>传递上一个选框值得名称（默认使用上一个选框的 name 属性值）</td>
   </tr>
   <tr>
     <td>data-first-title</td>

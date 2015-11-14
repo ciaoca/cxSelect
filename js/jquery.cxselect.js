@@ -1,8 +1,8 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.3.6
- * @date 2015-11-03
+ * @version 1.3.7
+ * @date 2015-11-14
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -63,6 +63,12 @@
         jsonValue: self.dom.box.data('jsonValue'),
         jsonSub: self.dom.box.data('jsonSub')
       });
+
+      var _dataSelects = self.dom.box.data('selects');
+
+      if (typeof _dataSelects === 'string' && _dataSelects.length) {
+        self.settings.selects = _dataSelects.split(',');
+      };
 
       // 未设置选择器组
       if (!$.isArray(self.settings.selects) || !self.settings.selects.length) {return};
@@ -157,7 +163,10 @@
       var _selectData;
       var _valueIndex;
       var _query = {};
+      var _dataUrl = _select.data('url');
       var _jsonSpace = typeof _select.data('jsonSpace') === 'undefined' ? self.settings.jsonSpace : _select.data('jsonSpace');
+      var _queryName;
+      var _selectName;
 
       // 清空后面的 select
       for (var i = 0, l = self.selectArray.length; i < l; i++) {
@@ -173,14 +182,22 @@
         };
       };
 
-      if (typeof _select.data('url') === 'string' && _select.data('url').length) {
+      if (typeof _dataUrl === 'string' && _dataUrl.length) {
         if (_indexPrev >= 0) {
           if (!self.selectArray[_indexPrev].val().length) {return};
 
-          _query[self.selectArray[_indexPrev].attr('name')] = self.selectArray[_indexPrev].val();
+          _queryName = _select.data('queryName');
+          _selectName = self.selectArray[_indexPrev].attr('name');
+
+          if (typeof _queryName === 'string' && _queryName.length) {
+            _query[_queryName] = self.selectArray[_indexPrev].val();
+          } else if (typeof _selectName === 'string' && _selectName.length) {
+            _query[_selectName] = self.selectArray[_indexPrev].val();
+          };
+
         };
 
-        $.getJSON(_select.data('url'), _query, function(json) {
+        $.getJSON(_dataUrl, _query, function(json) {
           _selectData = json;
 
           if (typeof _jsonSpace === 'string' && _jsonSpace.length) {
@@ -265,11 +282,11 @@
   // 默认值
   $.cxSelect.defaults = {
     selects: [],            // 下拉选框组
-    url: null,              // 列表数据文件路径，或设为对象
-    nodata: null,           // 无数据状态
+    url: null,              // 列表数据文件路径（URL）或数组数据
+    nodata: null,           // 无数据状态显示方式
     required: false,        // 是否为必选
     firstTitle: '请选择',    // 第一个选项选项的标题
-    firstValue: '',        // 第一个选项的值
+    firstValue: '',         // 第一个选项的值
     jsonSpace: '',          // 数据命名空间
     jsonName: 'n',          // 数据标题字段名称
     jsonValue: '',          // 数据值字段名称
