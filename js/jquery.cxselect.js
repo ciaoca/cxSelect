@@ -2,7 +2,7 @@
  * jQuery cxSelect
  * @name jquery.cxselect.js
  * @version 1.3.8
- * @date 2015-12-27
+ * @date 2015-12-2
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -126,7 +126,7 @@
         };
       };
 
-      if (typeof self.selectArray[0].data('url') === 'string' && self.selectArray[0].data('url').length) {
+      if (self.dataJson || (typeof self.selectArray[0].data('url') === 'string' && self.selectArray[0].data('url').length)) {
         self.getOptionData(0);
       } else {
         self.selectArray[0].prop('disabled', false).css({
