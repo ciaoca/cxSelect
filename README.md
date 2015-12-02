@@ -219,7 +219,7 @@ $.cxSelect.defaults.nodata = 'none';
 可以使用任何类型的数据作为值，但最终都会被转化为文本。
 [自定义 DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
 
-###各选项数据接口独立
+##各选项数据接口独立
 可以为每个```select```设置一个接口，根据接口返回的数据结构，设置```json-space```、```json-name```、```json-value```适应 JSON 结构（包括纯数组）。
 当页面加载时，第一个选框已有选项数据，可以不设置第一个选框的接口。
 [独立接口 DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
