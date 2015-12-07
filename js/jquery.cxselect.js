@@ -2,7 +2,7 @@
  * jQuery cxSelect
  * @name jquery.cxselect.js
  * @version 1.3.8
- * @date 2015-12-2
+ * @date 2015-12-7
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -75,10 +75,19 @@
 
       self.selectArray = [];
 
-      for (var i = 0, l = self.settings.selects.length; i < l; i++) {
-        if (!self.dom.box.find('select.' + self.settings.selects[i])) {break};
+      var _tempSelect;
 
-        self.selectArray.push(self.dom.box.find('select.' + self.settings.selects[i]));
+      for (var i = 0, l = self.settings.selects.length; i < l; i++) {
+        _tempSelect = self.dom.box.find('select.' + self.settings.selects[i]);
+
+        if (!_tempSelect) {break};
+
+        // 保存默认值
+        if (typeof _tempSelect.val() === 'string') {
+          _tempSelect.data('value', _tempSelect.val());
+        };
+
+        self.selectArray.push(_tempSelect);
       };
 
       // 设置的选择器组不存在
