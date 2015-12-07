@@ -23,37 +23,43 @@ a:hover{color:#00f;}
   <h2>示例</h2>
   <fieldset id="city_china">
     <legend>默认</legend>
-    <p>省份：<select class="province" disabled="disabled"></select></p>
-    <p>城市：<select class="city" disabled="disabled"></select></p>
-    <p>地区：<select class="area" disabled="disabled"></select></p>
+    <p>省份：<select class="province"></select></p>
+    <p>城市：<select class="city"></select></p>
+    <p>地区：<select class="area"></select></p>
   </fieldset>
 
   <fieldset id="city_china_val">
     <legend>设置默认值及选项标题</legend>
     <p>所在地区：
-      <select class="province" disabled="disabled" data-value="浙江省" data-first-title="选择省"></select>
-      <select class="city" disabled="disabled" data-value="杭州市" data-first-title="选择市"></select>
-      <select class="area" disabled="disabled" data-value="西湖区" data-first-title="选择地区"></select>
+      <select class="province" data-first-title="选择省">
+        <option value="浙江省" selected></option>
+      </select>
+      <select class="city" data-first-title="选择市">
+        <option value="杭州市" selected></option>
+      </select>
+      <select class="area" data-first-title="选择地区">
+        <option value="西湖区" selected></option>
+      </select>
     </p>
   </fieldset>
       
   <fieldset id="global_location">
     <legend>全球主要国家城市联动</legend>
     <p>所在地区：
-      <select class="country" disabled="disabled" data-first-title="选择国家"></select>
-      <select class="state" disabled="disabled"></select>
-      <select class="city" disabled="disabled"></select>
-      <select class="region" disabled="disabled"></select>
+      <select class="country" data-first-title="选择国家"></select>
+      <select class="state"></select>
+      <select class="city"></select>
+      <select class="region"></select>
     </p>
   </fieldset>
   
   <fieldset id="custom_data">
     <legend>自定义选项</legend>
-    <p>一：<select class="first" disabled="disabled"></select></p>
-    <p>二：<select class="second" disabled="disabled"></select></p>
-    <p>三：<select class="third" disabled="disabled"></select></p>
-    <p>四：<select class="fourth" disabled="disabled"></select></p>
-    <p>五：<select class="fifth" disabled="disabled"></select></p>
+    <p>一：<select class="first"></select></p>
+    <p>二：<select class="second"></select></p>
+    <p>三：<select class="third"></select></p>
+    <p>四：<select class="fourth"></select></p>
+    <p>五：<select class="fifth"></select></p>
   </fieldset>
 
   <h2>文档</h2>

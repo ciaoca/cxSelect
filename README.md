@@ -31,13 +31,23 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 <!--
 select 必须放在元素 id="element_id" 的内部，不限层级
 select 的 class 任意取值，也可以附加多个 class，如 class="province otherclass"，在调用时只需要输入其中一个即可，但是不能重复
-如需设置 select 默认值，加上 data-value 属性，例：<select class="province" data-value="浙江省"></select>
 -->
 <div id="element_id">
   <select class="province"></select>
   <select class="city"></select>
   <select class="area"></select>
 </div>
+```
+
+###设置默认值
+```html
+<!-- 方法一：使用 option 的 value 和 selected 属性 --> 
+<select class="province"> 
+  <option value="浙江省" selected>浙江省</option> 
+</select> 
+ 
+<!-- 方法二：使用 select 的 data-value 属性 --> 
+<select class="province" data-value="浙江省"></select> 
 ```
 
 ###调用 cxSelect
@@ -48,7 +58,7 @@ $('#element_id').cxSelect({
   nodata: 'none'
 });
 ```
-###可设置全局默认值
+###设置参数全局默认值
 ``` javascript
 // 需在引入 <script src="jquery.cxselect.js"></script> 之后，调用之前设置
 $.cxSelect.defaults.url = 'cityData.min.json';
@@ -174,6 +184,9 @@ $.cxSelect.defaults.nodata = 'none';
 </table>
 
 ###在 &lt;select&gt; 上的 data- 属性
+```html
+<select class="province" data-value="浙江省" data-first-title="选择省"></select>
+```
 <table>
   <thead>
     <tr>
