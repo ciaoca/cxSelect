@@ -12,8 +12,8 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 
 **版本：**
 
-* jQuery v1.7+
-* jQuery cxSelect v1.3.8
+* jQuery v1.7+ | Zepto v1.0+
+* jQuery cxSelect v1.3.9
 
 文档：http://code.ciaoca.com/jquery/cxselect/
 
@@ -95,7 +95,7 @@ $.cxSelect.defaults.nodata = 'none';
   <tr>
     <td>required</td>
     <td>false</td>
-    <td>是否为必选。设为 flase 时，会在列表头部添加 `&lt;option value="firstValue"&gt;firstTitle&lt;/option&gt;` 选项。</td>
+    <td>是否为必选。设为 false 时，会在列表头部添加 `&lt;option value="firstValue"&gt;firstTitle&lt;/option&gt;` 选项。</td>
   </tr>
   <tr>
     <td>firstTitle</td>

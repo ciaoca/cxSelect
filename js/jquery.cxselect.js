@@ -1,8 +1,8 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.3.8
- * @date 2015-12-7
+ * @version 1.3.9
+ * @date 2016-01-06
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -83,8 +83,8 @@
         if (!_tempSelect) {break};
 
         // 保存默认值
-        if (typeof _tempSelect.val() === 'string') {
-          _tempSelect.data('value', _tempSelect.val());
+        if (typeof _tempSelect.val() === 'string' && _tempSelect.val().length) {
+          _tempSelect.attr('data-value', _tempSelect.val());
         };
 
         self.selectArray.push(_tempSelect);
@@ -102,7 +102,7 @@
         self.start();
 
       // 设置 URL，通过 Ajax 获取数据
-      } else if (typeof self.settings.url === 'string') {
+      } else if (typeof self.settings.url === 'string' && self.settings.url.length) {
         $.getJSON(self.settings.url, function(json) {
           self.start(json);
         });
@@ -284,7 +284,7 @@
 
       // 初次加载设置默认值
       if (typeof select.data('value') !== 'undefined') {
-        select.val(String(select.data('value'))).removeData('value').removeAttr('data-value');
+        select.val(String(select.data('value'))).removeAttr('data-value');
       };
 
       select.trigger('change');
