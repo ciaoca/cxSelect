@@ -13,7 +13,7 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 **版本：**
 
 * jQuery v1.7+ | Zepto v1.0+
-* jQuery cxSelect v1.3.9
+* jQuery cxSelect v1.3.10
 
 文档：http://code.ciaoca.com/jquery/cxselect/
 
@@ -41,12 +41,18 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 
 ###设置默认值
 ```html
-<!-- 方法一：使用 option 的 value 和 selected 属性 --> 
+<!--
+推荐使用
+方法一：使用 option 的 value 和 selected 属性
+--> 
 <select class="province"> 
   <option value="浙江省" selected>浙江省</option> 
 </select> 
  
-<!-- 方法二：使用 select 的 data-value 属性 --> 
+<!--
+方法二：使用 select 的 data-value 属性
+当同时设置 option 的 value 和 select 的 data-value 时，优先使用 data-value 的值
+--> 
 <select class="province" data-value="浙江省"></select> 
 ```
 
