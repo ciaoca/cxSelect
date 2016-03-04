@@ -23,25 +23,51 @@ a:hover{color:#00f;}
   <h2>示例</h2>
   <fieldset id="city_china">
     <legend>默认</legend>
-    <p>省份：<select class="province"></select></p>
-    <p>城市：<select class="city"></select></p>
-    <p>地区：<select class="area"></select></p>
+    <p>省份：<select class="province">
+      <option>请选择</option>
+    </select></p>
+    <p>城市：<select class="city">
+      <option>请选择</option>
+    </select></p>
+    <p>地区：<select class="area">
+      <option>请选择</option>
+    </select></p>
   </fieldset>
 
   <fieldset id="city_china_val">
     <legend>设置默认值及选项标题</legend>
     <p>所在地区：
       <select class="province" data-first-title="选择省">
-        <option value="浙江省" selected></option>
+        <option value="">请选择</option>
+        <option value="浙江省" selected>浙江省</option>
       </select>
       <select class="city" data-first-title="选择市">
-        <option value="杭州市" selected></option>
+        <option value="">请选择</option>
+        <option value="杭州市" selected>杭州市</option>
       </select>
       <select class="area" data-first-title="选择地区">
-        <option value="西湖区" selected></option>
+        <option value="">请选择</option>
+        <option value="西湖区" selected>西湖区</option>
       </select>
     </p>
   </fieldset>
+
+  <!-- <fieldset id="city_china_val">
+    <legend>多种设置默认值的方式</legend>
+    <p>方法一：使用 option 的 value 和 selected 属性</p>
+    <p><select class="province">
+      <option>浙江省</option>
+    </select></p>
+    <p>如果有多个 option ，需要使用 selected 属性指定选中项</p>
+    <p><select class="city">
+      <option>请选择</option>
+      <option value="杭州市" selected>杭州市</option>
+    </select></p>
+    <p>方法二：使用 select 的 data-value 属性</p>
+    <p><select class="area" data-value="西湖区">
+      <option>请选择</option>
+    </select></p>
+  </fieldset> -->
       
   <fieldset id="global_location">
     <legend>全球主要国家城市联动</legend>
@@ -73,8 +99,8 @@ a:hover{color:#00f;}
   <p>Released under the MIT license</p>
 </div>
 
-<script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
-<script src="js/jquery.cxselect.min.js"></script>
+<script src="http://cdn.staticfile.org/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/jquery.cxselect.js"></script>
 <script>
 $.cxSelect.defaults.url = 'js/cityData.min.json';
 

@@ -1,8 +1,8 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.3.9
- * @date 2016-01-06
+ * @version 1.3.10
+ * @date 2016-03-04
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -75,15 +75,15 @@
 
       self.selectArray = [];
 
-      var _tempSelect;
+      var _tempSelect, _tempValue;
 
       for (var i = 0, l = self.settings.selects.length; i < l; i++) {
         _tempSelect = self.dom.box.find('select.' + self.settings.selects[i]);
 
-        if (!_tempSelect) {break};
+        if (!_tempSelect || !_tempSelect.length) {break};
 
         // 保存默认值
-        if (typeof _tempSelect.val() === 'string' && _tempSelect.val().length) {
+        if (typeof _tempSelect.data('value') === 'undefined' && _tempSelect[0].options.length && typeof _tempSelect.val() === 'string') {
           _tempSelect.attr('data-value', _tempSelect.val());
         };
 
@@ -285,6 +285,10 @@
       // 初次加载设置默认值
       if (typeof select.data('value') !== 'undefined') {
         select.val(String(select.data('value'))).removeAttr('data-value');
+
+        if (select[0].selectedIndex < 0) {
+          select[0].options[0].selected = true;
+        };
       };
 
       select.trigger('change');
