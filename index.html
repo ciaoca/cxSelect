@@ -23,7 +23,7 @@ a:hover{color:#00f;}
   <h2>示例</h2>
   <fieldset id="city_china">
     <legend>默认</legend>
-    <p>省份：<select class="province">
+    <p>省份：<select class="province other">
       <option>请选择</option>
     </select></p>
     <p>城市：<select class="city">
@@ -37,7 +37,7 @@ a:hover{color:#00f;}
   <fieldset id="city_china_val">
     <legend>设置默认值及选项标题</legend>
     <p>所在地区：
-      <select class="province" data-first-title="选择省">
+      <select class="province other" data-first-title="选择省">
         <option value="">请选择</option>
         <option value="浙江省" selected>浙江省</option>
       </select>
@@ -54,15 +54,18 @@ a:hover{color:#00f;}
 
   <!-- <fieldset id="city_china_val">
     <legend>多种设置默认值的方式</legend>
+
     <p>方法一：使用 option 的 value 和 selected 属性</p>
     <p><select class="province">
       <option>浙江省</option>
     </select></p>
+
     <p>如果有多个 option ，需要使用 selected 属性指定选中项</p>
     <p><select class="city">
       <option>请选择</option>
       <option value="杭州市" selected>杭州市</option>
     </select></p>
+
     <p>方法二：使用 select 的 data-value 属性</p>
     <p><select class="area" data-value="西湖区">
       <option>请选择</option>
@@ -73,9 +76,9 @@ a:hover{color:#00f;}
     <legend>全球主要国家城市联动</legend>
     <p>所在地区：
       <select class="country" data-first-title="选择国家"></select>
-      <select class="state"></select>
-      <select class="city"></select>
-      <select class="region"></select>
+      <select class="state" data-required="true"></select>
+      <select class="city" data-required="true"></select>
+      <select class="region" data-required="true"></select>
     </p>
   </fieldset>
   
@@ -91,7 +94,7 @@ a:hover{color:#00f;}
   <h2>文档</h2>
   <ul>
     <li><a target="_blank" href="https://github.com/ciaoca/cxSelect">Github</a></li>
-    <li><a target="_blank" href="http://code.ciaoca.com/jquery/cxselect/">中文文档</a></li>
+    <li><a target="_blank" href="http://code.ciaoca.com/jquery/cxSelect/">中文文档</a></li>
   </ul>
   
   <h2>作者</h2>
@@ -100,30 +103,13 @@ a:hover{color:#00f;}
 </div>
 
 <script src="http://cdn.staticfile.org/jquery/1.11.3/jquery.min.js"></script>
+<!-- <script src="http://cdn.staticfile.org/zepto/1.0/zepto.min.js"></script> -->
 <script src="js/jquery.cxselect.js"></script>
 <script>
-$.cxSelect.defaults.url = 'js/cityData.min.json';
-
-$('#city_china').cxSelect({
-  selects: ['province', 'city', 'area']
-});
-
-$('#city_china_val').cxSelect({
-  selects: ['province', 'city', 'area'],
-  nodata: 'none'
-});
-
-$('#global_location').cxSelect({
-  url: 'js/globalData.min.json',
-  selects: ['country', 'state', 'city', 'region'],
-  nodata: 'none'
-});
-
-$('#custom_data').cxSelect({
-  selects: ['first', 'second', 'third', 'fourth', 'fifth'],
-  required: true,
-  jsonValue: 'v',
-  url: [
+(function() {
+  var urlChina = 'js/cityData.min.json';
+  var urlGlobal = 'js/globalData.min.json';
+  var dataCustom = [
     {'v': '1', 'n': '第一级 >', 's': [
       {'v': '2', 'n': '第二级 >', 's': [
         {'v': '3', 'n': '第三级 >', 's': [
@@ -175,8 +161,32 @@ $('#custom_data').cxSelect({
       {n: '未设置 value'}
     ]},
     {'v': '' , 'n': '无子级'}
-  ]
-});
+  ];
+
+  $.cxSelect.defaults.url = urlChina;
+
+  $('#city_china').cxSelect({
+    selects: ['province', 'city', 'area']
+  });
+
+  $('#city_china_val').cxSelect({
+    selects: ['province', 'city', 'area'],
+    nodata: 'none'
+  });
+
+  $('#global_location').cxSelect({
+    url: urlGlobal,
+    selects: ['country', 'state', 'city', 'region'],
+    nodata: 'none'
+  });
+
+  $('#custom_data').cxSelect({
+    selects: ['first', 'second', 'third', 'fourth', 'fifth'],
+    required: true,
+    jsonValue: 'v',
+    url: dataCustom
+  });
+})();
 </script>
 </body>
 </html>

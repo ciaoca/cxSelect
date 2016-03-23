@@ -1,8 +1,8 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.3.10
- * @date 2016-03-04
+ * @version 1.3.11
+ * @date 2016-03-23
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -17,8 +17,7 @@
 }(function($) {
   $.cxSelect = function() {
     var cxSelect = {
-      dom: {},
-      api: {}
+      dom: {}
     };
 
     cxSelect.init = function() {
@@ -39,9 +38,14 @@
         return (o && o.length && (typeof jQuery === 'function' || typeof jQuery === 'object') && o instanceof jQuery) ? true : false;
       };
 
+      // 检测是否为 Zepto 对象
+      var _isZepto = function(o){
+        return (o && o.length && (typeof Zepto === 'function' || typeof Zepto === 'object') && Zepto.zepto.isZ(o)) ? true : false;
+      };
+
       // 分配参数
       for (var i = 0, l = arguments.length; i < l; i++) {
-        if (_isJquery(arguments[i])) {
+        if (_isJquery(arguments[i]) || _isZepto(arguments[i])) {
           self.dom.box = arguments[i];
         } else if (_isElement(arguments[i])) {
           self.dom.box = $(arguments[i]);
@@ -97,7 +101,7 @@
         self.selectChange(this.className);
       });
 
-      // 无整合数据，选项接口数据独立
+      // 无整合数据，使用独立接口获取数据
       if (!self.settings.url) {
         self.start();
 
@@ -113,8 +117,8 @@
       };
     };
 
-    cxSelect.getIndex = function(n) {
-      return (this.settings.required) ? n : n - 1;
+    cxSelect.getIndex = function(n, required) {
+      return required ? n : n - 1;
     };
 
     cxSelect.start = function(data) {
@@ -149,21 +153,23 @@
     cxSelect.selectChange = function(name) {
       if (typeof name !== 'string' || !name.length) {return};
 
+      var self = this;
+      var _index;
+
       name = name.replace(/\s+/g, ',');
       name = ',' + name + ',';
 
-      var _index;
-
       // 获取当前 select 位置
-      for (var i = 0, l = this.selectArray.length; i < l; i++) {
-        if (name.indexOf(',' + this.settings.selects[i] + ',') > -1) {
+      for (var i = 0, l = self.selectArray.length; i < l; i++) {
+        if (name.indexOf(',' + self.settings.selects[i] + ',') > -1) {
           _index = i;
+          break;
         };
       };
 
-      if (typeof _index === 'number') {
+      if (typeof _index === 'number' && _index > -1) {
         _index += 1;
-        this.getOptionData(_index);
+        self.getOptionData(_index);
       };
     };
 
@@ -175,29 +181,27 @@
 
       var _indexPrev = index - 1;
       var _select = self.selectArray[index];
-      var _selectIndex;
       var _selectData;
       var _valueIndex;
-      var _query = {};
       var _dataUrl = _select.data('url');
       var _jsonSpace = typeof _select.data('jsonSpace') === 'undefined' ? self.settings.jsonSpace : _select.data('jsonSpace');
+      var _query = {};
       var _queryName;
       var _selectName;
 
       // 清空后面的 select
-      for (var i = 0, l = self.selectArray.length; i < l; i++) {
-        if (i >= index) {
-          self.selectArray[i].empty().prop('disabled', true);
+      for (var i = index, l = self.selectArray.length; i < l; i++) {
+        self.selectArray[i].empty().prop('disabled', true);
 
-          if (self.settings.nodata === 'none') {
-            self.selectArray[i].css('display', 'none');
+        if (self.settings.nodata === 'none') {
+          self.selectArray[i].css('display', 'none');
 
-          } else if(self.settings.nodata === 'hidden') {
-            self.selectArray[i].css('visibility', 'hidden');
-          };
+        } else if (self.settings.nodata === 'hidden') {
+          self.selectArray[i].css('visibility', 'hidden');
         };
       };
 
+      // 使用独立接口
       if (typeof _dataUrl === 'string' && _dataUrl.length) {
         if (_indexPrev >= 0) {
           if (!self.selectArray[_indexPrev].val().length) {return};
@@ -227,42 +231,42 @@
           self.buildOption(_select, _selectData);
         });
 
+      // 使用整合数据
       } else if (self.dataJson && typeof self.dataJson === 'object') {
         _selectData = self.dataJson;
 
-        for (var i = 0, l = self.selectArray.length; i < l; i++) {
-          if (i < index) {
-            _valueIndex = self.getIndex(self.selectArray[i][0].selectedIndex);
+        for (var i = 0; i < index; i++) {
+          _valueIndex = self.getIndex(self.selectArray[i][0].selectedIndex, typeof self.selectArray[i].data('required') === 'boolean' ? self.selectArray[i].data('required') : self.settings.required);
 
-            if (typeof _selectData[_valueIndex] === 'object' && $.isArray(_selectData[_valueIndex][self.settings.jsonSub]) && _selectData[_valueIndex][self.settings.jsonSub].length) {
-              _selectIndex = i;
-              _selectData = _selectData[_valueIndex][self.settings.jsonSub];
-            }
+          if (typeof _selectData[_valueIndex] === 'object' && $.isArray(_selectData[_valueIndex][self.settings.jsonSub]) && _selectData[_valueIndex][self.settings.jsonSub].length) {
+            _selectData = _selectData[_valueIndex][self.settings.jsonSub];
+          } else {
+            _selectData = null;
+            break;
           };
         };
 
-        if (_indexPrev < 0 || _indexPrev === _selectIndex) {
-          self.buildOption(_select, _selectData);
-        };
+        self.buildOption(_select, _selectData);
       }
     };
 
     // 构建选项列表
     cxSelect.buildOption = function(select, data) {
       var self = this;
-      var _firstTitle = typeof select.data('firstTitle') === 'undefined' ? self.settings.firstTitle : String(select.data('firstTitle'));
-      var _firstValue = typeof select.data('firstValue') === 'undefined' ? self.settings.firstValue : String(select.data('firstValue'));
-      var _jsonName = typeof select.data('jsonName') === 'undefined' ? self.settings.jsonName : String(select.data('jsonName'));
-      var _jsonValue = typeof select.data('jsonValue') === 'undefined' ? self.settings.jsonValue : String(select.data('jsonValue'));
+      var _required = typeof select.data('required') === 'boolean' ? select.data('required') : self.settings.required;
+      var _firstTitle = typeof select.data('firstTitle') === 'undefined' ? self.settings.firstTitle : select.data('firstTitle');
+      var _firstValue = typeof select.data('firstValue') === 'undefined' ? self.settings.firstValue : select.data('firstValue');
+      var _jsonName = typeof select.data('jsonName') === 'undefined' ? self.settings.jsonName : select.data('jsonName');
+      var _jsonValue = typeof select.data('jsonValue') === 'undefined' ? self.settings.jsonValue : select.data('jsonValue');
 
       if (!$.isArray(data)) {return};
 
-      var _html = !self.settings.required ? '<option value="' + _firstValue + '">' + _firstTitle + '</option>' : '';
+      var _html = !_required ? '<option value="' + String(_firstValue) + '">' + String(_firstTitle) + '</option>' : '';
 
-      // 区分标题或值的数据
-      if (_jsonName.length) {
+      // 区分标题、值的数据
+      if (typeof _jsonName === 'string' && _jsonName.length) {
         // 无值字段时使用标题作为值
-        if (!_jsonValue.length) {
+        if (typeof _jsonValue !== 'string' || !_jsonValue.length) {
           _jsonValue = _jsonName;
         };
 
@@ -283,8 +287,8 @@
       });
 
       // 初次加载设置默认值
-      if (typeof select.data('value') !== 'undefined') {
-        select.val(String(select.data('value'))).removeAttr('data-value');
+      if (typeof select.attr('data-value') === 'string') {
+        select.val(String(select.attr('data-value'))).removeAttr('data-value');
 
         if (select[0].selectedIndex < 0) {
           select[0].options[0].selected = true;
@@ -305,7 +309,7 @@
     url: null,              // 列表数据文件路径（URL）或数组数据
     nodata: null,           // 无数据状态显示方式
     required: false,        // 是否为必选
-    firstTitle: '请选择',    // 第一个选项选项的标题
+    firstTitle: '请选择',    // 第一个选项的标题
     firstValue: '',         // 第一个选项的值
     jsonSpace: '',          // 数据命名空间
     jsonName: 'n',          // 数据标题字段名称
