@@ -265,6 +265,45 @@ cxSelectApi.setOptions();
   </tr>
 </table>
 
+##API 接口
+<table>
+  <thead>
+    <tr>
+      <th width="160">名称</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>attach()</td>
+    <td>
+      <p>绑定</p>
+      <p>调用时会自动进行绑定，用于使用detach解除绑定后，进行重新绑定。</p>
+    </td>
+  </tr>
+  <tr>
+    <td>detach()</td>
+    <td>
+      <p>解除绑定</p>
+      <p>解除绑定后，不再具有联动效果。</p>
+    </td>
+  </tr>
+  <tr>
+    <td>clear(index)</td>
+    <td>
+      <p>清空选项</p>
+      <p>index: select 的序号，从 0 开始。</p>
+      <p>清空第 index 个 select 自身及之后的 select 的选项。</p>
+    </td>
+  </tr>
+  <tr>
+    <td>setOptions(settings)</td>
+    <td>
+      <p>重新设置参数</p>
+      <p>settings: 与调用时参数一致。</p>
+    </td>
+  </tr>
+</table>
+
 ##自定义数据及使用纯数组数据
 可以使用任何类型的数据作为值，但最终都会被转化为文本。
 
