@@ -2,7 +2,7 @@
  * jQuery cxSelect
  * @name jquery.cxselect.js
  * @version 1.4.0
- * @date 2016-03-28
+ * @date 2016-04-01
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -116,15 +116,15 @@
     if (!theSelect.settings.url && !theSelect.settings.data) {
       cxSelect.start.apply(theSelect);
 
+    // 设置自定义数据
+    } else if ($.isArray(theSelect.settings.data)) {
+      cxSelect.start.call(theSelect, theSelect.settings.data);
+
     // 设置 URL，通过 Ajax 获取数据
     } else if (typeof theSelect.settings.url === 'string' && theSelect.settings.url.length) {
       $.getJSON(theSelect.settings.url, function(json) {
         cxSelect.start.call(theSelect, json);
       });
-
-    // 设置自定义数据
-    } else if ($.isArray(theSelect.settings.data)) {
-      cxSelect.start.call(theSelect, theSelect.settings.data);
     };
   };
 
@@ -154,10 +154,11 @@
     };
 
     if (opts) {
-      if (typeof opts.url === 'string' && opts.url.length) {
+      if (!$.isArray(opts.data) && typeof opts.url === 'string' && opts.url.length) {
         $.getJSON(self.settings.url, function(json) {
           cxSelect.start.call(self, json);
         });
+
       } else {
         cxSelect.start.call(self, opts.data);
       };
