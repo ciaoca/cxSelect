@@ -12,13 +12,12 @@ fieldset{margin:2em 0;}
 fieldset legend{font-weight:bold;font-size:16px;line-height:2;}
 a{color:#06f;text-decoration:none;}
 a:hover{color:#00f;}
-
-.wrap{width:800px;margin:0 auto;padding:20px 40px;border-radius:8px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+.wrap{width:900px;margin:0 auto;padding:20px 50px;border-radius:8px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.2);}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>jQuery cxSelect 联动下拉菜单</h1>
+  <h1>cxSelect 联动下拉菜单</h1>
 
   <h2>示例</h2>
   <fieldset id="city_china">
@@ -89,6 +88,47 @@ a:hover{color:#00f;}
     <p>三：<select class="third"></select></p>
     <p>四：<select class="fourth"></select></p>
     <p>五：<select class="fifth"></select></p>
+  </fieldset>
+
+  <fieldset>
+    <legend>API 接口</legend>
+    <div id="api_data">
+      <dl>
+        <dt>选择器组 A</dt>
+        <dd>
+          <select class="province select"></select>
+          <select class="city select"></select>
+          <select class="area select"></select>
+        </dd>
+      </dl>
+      <dl>
+        <dt>选择器组 B</dt>
+        <dd>
+          <select class="first select"></select>
+          <select class="second select"></select>
+          <select class="third select"></select>
+          <select class="fourth select"></select>
+          <select class="fifth select"></select>
+        </dd>
+      </dl>
+    </div>
+
+    <div>
+      <button type="button" class="button green" name="attach" value="">attach</button>
+      <button type="button" class="button green" name="detach" value="">detach</button>
+      <button type="button" class="button green" name="clear" value="">clear</button>
+    </div>
+    <div>
+      <button type="button" class="button green" name="setSelect" value="b">更换 select 组</button>
+      <button type="button" class="button green" name="setData" value="china">更换数据：国内数据</button>
+      <button type="button" class="button green" name="setData" value="global">更换数据：全球数据</button>
+      <button type="button" class="button green" name="setData" value="custom">更换数据：自定义数据</button>
+    </div>
+    <div>
+      <button type="button" class="button green" name="required" value="0">更改 required</button>
+      <button type="button" class="button green" name="emptyStyle" value="">更改 emptyStyle</button>
+      <button type="button" class="button green" name="firstTitle" value="请选择">更改 firstTitle</button>
+    </div>
   </fieldset>
 
   <h2>文档</h2>
@@ -165,26 +205,122 @@ a:hover{color:#00f;}
 
   $.cxSelect.defaults.url = urlChina;
 
+  // 默认
   $('#city_china').cxSelect({
     selects: ['province', 'city', 'area']
   });
 
+  // 设置默认值及选项标题
   $('#city_china_val').cxSelect({
     selects: ['province', 'city', 'area'],
-    nodata: 'none'
+    emptyStyle: 'none'
   });
 
+  // 全球主要国家城市联动
   $('#global_location').cxSelect({
     url: urlGlobal,
     selects: ['country', 'state', 'city', 'region'],
-    nodata: 'none'
+    emptyStyle: 'none'
   });
 
+  // 自定义选项
   $('#custom_data').cxSelect({
     selects: ['first', 'second', 'third', 'fourth', 'fifth'],
-    required: true,
+    // required: true,
     jsonValue: 'v',
-    url: dataCustom
+    data: dataCustom
+  });
+
+  // API 接口
+  var apiBox = $('#api_data');
+  var cxSelectApi;
+
+  apiBox.cxSelect({
+    selects: ['province', 'city', 'area']
+  }, function(api) {
+    cxSelectApi = api;
+  });
+
+  // cxSelectApi = $.cxSelect(apiBox, {
+  //   selects: ['province', 'city', 'area']
+  // });
+
+  $('body').on('click', 'button', function() {
+    var _name = this.name;
+    var _value = this.value;
+
+    switch (_name) {
+      case 'attach':
+        cxSelectApi.attach();
+        break;
+
+      case 'detach':
+        cxSelectApi.detach();
+        break;
+
+      case 'clear':
+        cxSelectApi.clear();
+        break;
+
+      case 'required':
+        cxSelectApi.setOptions({
+          required: _value == 1 ? false : true
+        });
+        this.value = _value == 1 ? 0 : 1;
+        break;
+
+      case 'emptyStyle':
+        if (_value === 'none') {
+          _value = 'hidden';
+        } else if (_value === 'hidden') {
+          _value = '';
+        } else {
+          _value = 'none';
+        };
+        cxSelectApi.setOptions({
+          emptyStyle: _value
+        });
+        this.value = _value;
+        break;
+
+      case 'firstTitle':
+        _value = _value === '请选择' ? '选择吧' : '请选择';
+        cxSelectApi.setOptions({
+          firstTitle: _value
+        });
+        this.value = _value;
+        break;
+
+      case 'setSelect':
+        cxSelectApi.setOptions({
+          selects: _value === 'a' ? ['province', 'city', 'area'] : ['first', 'second', 'third', 'fourth', 'fifth']
+        });
+        this.value = _value === 'a' ? 'b' : 'a';
+        break;
+
+      case 'setData':
+        if (_value === 'china' || _value === 'global') {
+          // $.ajax({
+          //   url: this.value === 'china' ? urlChina : urlGlobal,
+          //   type: 'GET',
+          //   dataType: 'json'
+          // }).done(function(data, textStatus, jqXHR) {
+            cxSelectApi.setOptions({
+              url: this.value === 'china' ? urlChina : urlGlobal,
+              // data: data
+            });
+          // }).fail(function(jqXHR, textStatus, errorThrown) {
+          // });
+
+        } else if (this.value === 'custom') {
+          cxSelectApi.setOptions({
+            data: dataCustom
+          });
+        };
+        break;
+
+      // not default
+    };
   });
 })();
 </script>
