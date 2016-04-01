@@ -13,7 +13,7 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 **版本：**
 
 * jQuery v1.7+ | Zepto v1.0+
-* jQuery cxSelect v1.3.11
+* jQuery cxSelect v1.4.0
 
 文档：http://code.ciaoca.com/jquery/cxselect/
 
@@ -42,7 +42,6 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 ###设置默认值
 ```html
 <!--
-推荐使用
 方法一：使用 option 的 value 和 selected 属性
 --> 
 <select class="province"> 
@@ -61,14 +60,37 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 $('#element_id').cxSelect({
   url: 'cityData.min.json'                // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
   selects: ['province', 'city', 'area'],  // selects 为数组形式，请注意顺序
-  nodata: 'none'
+  emptyStyle: 'none'
 });
 ```
+
 ###设置参数全局默认值
 ``` javascript
 // 需在引入 <script src="jquery.cxselect.js"></script> 之后，调用之前设置
 $.cxSelect.defaults.url = 'cityData.min.json';
-$.cxSelect.defaults.nodata = 'none';
+$.cxSelect.defaults.emptyStyle = 'none';
+```
+
+###API 接口
+``` javascript
+var cxSelectApi;
+
+// 方法一：
+cxSelectApi = $.cxSelect($('#element_id'), {
+  selects: ['province', 'city', 'area']
+});
+
+// 方法二：
+$('#element_id').cxSelect({
+  selects: ['province', 'city', 'area']
+}, function(api) {
+  cxSelectApi = api;
+});
+
+cxSelectApi.attach();
+cxSelectApi.detach();
+cxSelectApi.clear();
+cxSelectApi.setOptions();
 ```
 
 ##参数说明
@@ -89,12 +111,17 @@ $.cxSelect.defaults.nodata = 'none';
     <td>url</td>
     <td>null</td>
     <td>
-      整合列表数据接口地址（URL） | 数组 <a href="http://code.ciaoca.com/jquery/cxselect/demo/custom.html">[DEMO]</a>。数据使用 JSON 格式。
-      每个选框的内容使用各自的接口地址，详见 <a href="http://code.ciaoca.com/jquery/cxselect/demo/oneself.html">[DEMO]</a>
+      <p>整合数据接口地址（URL）</p>
+      <p>每个选框的内容使用各自的接口地址，详见 <a href="http://code.ciaoca.com/jquery/cxselect/demo/oneself.html">[DEMO]</a></p>
     </td>
   </tr>
   <tr>
-    <td>nodata</td>
+    <td>data</td>
+    <td>null</td>
+    <td>自定义数据，类型为数组，使用 JSON 格式。<a href="http://code.ciaoca.com/jquery/cxselect/demo/custom.html">[DEMO]</a></td>
+  </tr>
+  <tr>
+    <td>emptyStyle</td>
     <td>null</td>
     <td>子集无数据时 select 的状态。可设置为："none"(display:none), "hidden"(visibility:hidden)</td>
   </tr>
@@ -136,7 +163,7 @@ $.cxSelect.defaults.nodata = 'none';
 </table>
 
 ##data 属性参数
-###在父元素上的 data- 属性
+###父元素上的 data- 属性
 ```html
 <div id="element_id" data-url="cityData.min.json" data-required="true"></select>
 ```
@@ -153,10 +180,10 @@ $.cxSelect.defaults.nodata = 'none';
   </tr>
   <tr>
     <td>data-url</td>
-    <td>列表数据接口地址（此处只能设置 URL，自定义需要在参数中设置）</td>
+    <td>列表数据接口地址</td>
   </tr>
   <tr>
-    <td>data-nodata</td>
+    <td>data-emptyStyle</td>
     <td>子集无数据时 select 的状态</td>
   </tr>
   <tr>
@@ -189,7 +216,7 @@ $.cxSelect.defaults.nodata = 'none';
   </tr>
 </table>
 
-###在 &lt;select&gt; 上的 data- 属性
+###select 上的 data- 属性
 ```html
 <select class="province" data-value="浙江省" data-first-title="选择省"></select>
 ```
