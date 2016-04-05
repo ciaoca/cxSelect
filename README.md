@@ -183,7 +183,7 @@ cxSelectApi.setOptions();
     <td>列表数据接口地址</td>
   </tr>
   <tr>
-    <td>data-emptyStyle</td>
+    <td>data-empty-style</td>
     <td>子集无数据时 select 的状态</td>
   </tr>
   <tr>
