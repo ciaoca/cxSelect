@@ -10,6 +10,7 @@ h2{font-size:24px;}
 h3{font-size:18px;}
 fieldset{margin:2em 0;}
 fieldset legend{font-weight:bold;font-size:16px;line-height:2;}
+select,button{padding:0.5em;}
 a{color:#06f;text-decoration:none;}
 a:hover{color:#00f;}
 .wrap{width:900px;margin:0 auto;padding:20px 50px;border-radius:8px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.2);}
@@ -20,6 +21,8 @@ a:hover{color:#00f;}
   <h1>cxSelect 联动下拉菜单</h1>
 
   <h2>示例</h2>
+  <p>如果无法通过 AJAX 获取数据，请运行在服务器环境下。</p>
+
   <fieldset id="city_china">
     <legend>默认</legend>
     <p>省份：<select class="province other">
@@ -113,22 +116,22 @@ a:hover{color:#00f;}
       </dl>
     </div>
 
-    <div>
+    <p>
       <button type="button" class="button green" name="attach" value="">attach</button>
       <button type="button" class="button green" name="detach" value="">detach</button>
       <button type="button" class="button green" name="clear" value="">clear</button>
-    </div>
-    <div>
+    </p>
+    <p>
       <button type="button" class="button green" name="setSelect" value="b">更换 select 组</button>
       <button type="button" class="button green" name="setData" value="china">更换数据：国内数据</button>
       <button type="button" class="button green" name="setData" value="global">更换数据：全球数据</button>
       <button type="button" class="button green" name="setData" value="custom">更换数据：自定义数据</button>
-    </div>
-    <div>
+    </p>
+    <p>
       <button type="button" class="button green" name="required" value="0">更改 required</button>
       <button type="button" class="button green" name="emptyStyle" value="">更改 emptyStyle</button>
       <button type="button" class="button green" name="firstTitle" value="请选择">更改 firstTitle</button>
-    </div>
+    </p>
   </fieldset>
 
   <h2>文档</h2>
