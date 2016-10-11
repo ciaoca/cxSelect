@@ -1,4 +1,4 @@
-#jQuery cxSelect
+# jQuery cxSelect
 
 cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品分类等联动菜单。
 
@@ -19,14 +19,14 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 
 示例：http://code.ciaoca.com/jquery/cxselect/demo/
 
-##使用方法
-###载入 JavaScript 文件
+## 使用方法
+### 载入 JavaScript 文件
 ```html
 <script src="jquery.js"></script>
 <script src="jquery.cxselect.js"></script>
 ```
 
-###DOM 结构
+### DOM 结构
 ```html
 <!--
 select 必须放在元素 id="element_id" 的内部，不限层级
@@ -39,7 +39,7 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 </div>
 ```
 
-###设置默认值
+### 设置默认值
 ```html
 <!--
 方法一：使用 option 的 value 和 selected 属性
@@ -55,7 +55,7 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 <select class="province" data-value="浙江省"></select> 
 ```
 
-###调用 cxSelect
+### 调用 cxSelect
 ``` javascript
 $('#element_id').cxSelect({
   url: 'cityData.min.json'                // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
@@ -64,14 +64,14 @@ $('#element_id').cxSelect({
 });
 ```
 
-###设置参数全局默认值
+### 设置参数全局默认值
 ``` javascript
 // 需在引入 <script src="jquery.cxselect.js"></script> 之后，调用之前设置
 $.cxSelect.defaults.url = 'cityData.min.json';
 $.cxSelect.defaults.emptyStyle = 'none';
 ```
 
-###API 接口
+### API 接口
 ``` javascript
 var cxSelectApi;
 
@@ -93,216 +93,66 @@ cxSelectApi.clear();
 cxSelectApi.setOptions();
 ```
 
-##参数说明
-<table>
-  <thead>
-    <tr>
-      <th width="120">名称</th>
-      <th width="120">默认值</th>
-      <th>说明</th>
-    </tr>
-  </thead>
-  <tr>
-    <td>selects</td>
-    <td>[]</td>
-    <td>下拉选框组。输入 select 的 className</td>
-  </tr>
-  <tr>
-    <td>url</td>
-    <td>null</td>
-    <td>
-      <p>整合数据接口地址（URL）</p>
-      <p>每个选框的内容使用各自的接口地址，详见 <a href="http://code.ciaoca.com/jquery/cxselect/demo/oneself.html">[DEMO]</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td>data</td>
-    <td>null</td>
-    <td>自定义数据，类型为数组，使用 JSON 格式。<a href="http://code.ciaoca.com/jquery/cxselect/demo/custom.html">[DEMO]</a></td>
-  </tr>
-  <tr>
-    <td>emptyStyle</td>
-    <td>null</td>
-    <td>子集无数据时 select 的状态。可设置为："none"(display:none), "hidden"(visibility:hidden)</td>
-  </tr>
-  <tr>
-    <td>required</td>
-    <td>false</td>
-    <td>是否为必选。设为 false 时，会在列表头部添加 `&lt;option value="firstValue"&gt;firstTitle&lt;/option&gt;` 选项。</td>
-  </tr>
-  <tr>
-    <td>firstTitle</td>
-    <td>'请选择'</td>
-    <td>选框第一个项目的标题（仅在 required 为 false 时有效）</td>
-  </tr>
-  <tr>
-    <td>firstValue</td>
-    <td>''</td>
-    <td>选框第一个项目的值（仅在 required 为 false 时有效）</td>
-  </tr>
-  <tr>
-    <td>jsonSpace</td>
-    <td>''</td>
-    <td>数据命名空间</td>
-  </tr>
-  <tr>
-    <td>jsonName</td>
-    <td>'n'</td>
-    <td>数据标题字段名称（用于 option 的标题）</td>
-  </tr>
-  <tr>
-    <td>jsonValue</td>
-    <td>''</td>
-    <td>数据值字段名称（用于 option 的 value，没有值字段时使用标题作为 value）</td>
-  </tr>
-  <tr>
-    <td>jsonSub</td>
-    <td>'s'</td>
-    <td>子集数据字段名称</td>
-  </tr>
-</table>
+## 参数说明
+名称|默认值|说明
+---|---|---
+selects|[]|下拉选框组。输入 select 的 className
+url|null|整合数据接口地址（URL）；每个选框的内容使用各自的接口地址，详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
+data|null|自定义数据，类型为数组，使用 JSON 格式。[DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
+emptyStyle|null|子集无数据时 select 元素的显示状态。可设置为：**"none"**(display:none), **"hidden"**(visibility:hidden)
+required|false|是否为必选。设为 `false` 时，会在列表头部添加 `<option value="firstValue">firstTitle</option>` 选项。
+firstTitle|'请选择'|选框第一个项目的标题（仅在 `required` 为 `false` 时有效）
+firstValue|''|选框第一个项目的值（仅在 `required` 为 `false` 时有效）
+jsonSpace|''|数据命名空间
+jsonName|'n'|数据标题字段名称（用于 option 的标题）
+jsonValue|''|数据值字段名称（用于 option 的 value，没有值字段时使用标题作为 value）
+jsonSub|'s'|子集数据字段名称
 
-##data 属性参数
-###父元素上的 data- 属性
+
+## data 属性参数
+### 父元素的 data- 属性
 ```html
 <div id="element_id" data-url="cityData.min.json" data-required="true"></select>
 ```
-<table>
-  <thead>
-    <tr>
-      <th width="160">名称</th>
-      <th>说明</th>
-    </tr>
-  </thead>
-  <tr>
-    <td>data-selects</td>
-    <td>下拉选框组。输入 select 的 className，使用英文逗号分隔的字符串</td>
-  </tr>
-  <tr>
-    <td>data-url</td>
-    <td>列表数据接口地址</td>
-  </tr>
-  <tr>
-    <td>data-empty-style</td>
-    <td>子集无数据时 select 的状态</td>
-  </tr>
-  <tr>
-    <td>data-required</td>
-    <td>是否为必选</td>
-  </tr>
-  <tr>
-    <td>data-first-title</td>
-    <td>选框第一个项目的标题</td>
-  </tr>
-  <tr>
-    <td>data-first-value</td>
-    <td>选框第一个项目的值</td>
-  </tr>
-  <tr>
-    <td>data-json-space</td>
-    <td>数据命名空间</td>
-  </tr>
-  <tr>
-    <td>data-json-name</td>
-    <td>数据标题字段名称</td>
-  </tr>
-  <tr>
-    <td>data-json-value</td>
-    <td>数据值字段名称</td>
-  </tr>
-  <tr>
-    <td>data-json-sub</td>
-    <td>子集数据字段名称</td>
-  </tr>
-</table>
 
-###select 上的 data- 属性
+名称|说明
+---|---
+data-selects|下拉选框组。输入 select 的 className，使用英文逗号分隔的字符串
+data-url|列表数据接口地址
+data-empty-style|子集无数据时 select 的显示状态
+data-required|是否为必选
+data-first-title|选框第一个项目的标题
+data-first-value|选框第一个项目的值
+data-json-space|数据命名空间
+data-json-name|数据标题字段名称
+data-json-value|数据值字段名称
+data-json-sub|子集数据字段名称
+
+### select 元素的 data- 属性
 ```html
 <select class="province" data-value="浙江省" data-first-title="选择省"></select>
 ```
-<table>
-  <thead>
-    <tr>
-      <th width="160">名称</th>
-      <th>说明</th>
-    </tr>
-  </thead>
-  <tr>
-    <td>data-value</td>
-    <td>默认选中值</td>
-  </tr>
-  <tr>
-    <td>data-url</td>
-    <td>列表数据接口地址</td>
-  </tr>
-  <tr>
-    <td>data-required</td>
-    <td>是否为必选</td>
-  </tr>
-  <tr>
-    <td>data-query-name</td>
-    <td>传递上一个选框值的参数名称（默认使用上一个选框的 name 属性值）</td>
-  </tr>
-  <tr>
-    <td>data-first-title</td>
-    <td>选框第一个项目的标题</td>
-  </tr>
-  <tr>
-    <td>data-first-value</td>
-    <td>选框第一个项目的值</td>
-  </tr>
-  <tr>
-    <td>data-json-space</td>
-    <td>数据命名空间</td>
-  </tr>
-  <tr>
-    <td>data-json-name</td>
-    <td>数据标题字段名称</td>
-  </tr>
-  <tr>
-    <td>data-json-value</td>
-    <td>数据值字段名称</td>
-  </tr>
-</table>
+
+名称|说明
+---|---
+data-value|默认选中值
+data-url|列表数据接口地址
+data-required|是否为必选
+data-query-name|传递上一个选框值的参数名称（默认使用上一个选框的 name 属性值）
+data-first-title|选框第一个项目的标题
+data-first-value|选框第一个项目的值
+data-json-space|数据命名空间
+data-json-name|数据标题字段名称
+data-json-value|数据值字段名称
 
 ##API 接口
-<table>
-  <thead>
-    <tr>
-      <th width="160">名称</th>
-      <th>说明</th>
-    </tr>
-  </thead>
-  <tr>
-    <td>attach()</td>
-    <td>
-      <p>绑定</p>
-      <p>调用时会自动进行绑定，用于使用detach解除绑定后，进行重新绑定。</p>
-    </td>
-  </tr>
-  <tr>
-    <td>detach()</td>
-    <td>
-      <p>解除绑定</p>
-      <p>解除绑定后，不再具有联动效果。</p>
-    </td>
-  </tr>
-  <tr>
-    <td>clear(index)</td>
-    <td>
-      <p>清空选项</p>
-      <p>index: select 的序号，从 0 开始。</p>
-      <p>清空第 index 个 select 自身及之后的 select 的选项。</p>
-    </td>
-  </tr>
-  <tr>
-    <td>setOptions(settings)</td>
-    <td>
-      <p>重新设置参数</p>
-      <p>settings: 与调用时参数一致。</p>
-    </td>
-  </tr>
-</table>
+
+名称|说明
+---|---
+attach()|绑定。调用时会自动进行绑定，用于使用detach解除绑定后，进行重新绑定。
+detach()|解除绑定。解除绑定后，不再具有联动效果。
+clear(index)|清空选项。清空第 index 个 select 自身及之后的 select 的选项（`index`: select 的序号，从 0 开始）
+setOptions(settings)|重新设置参数。（`settings`: 与调用时参数一致）
 
 ##自定义数据及使用纯数组数据
 可以使用任何类型的数据作为值，但最终都会被转化为文本。
