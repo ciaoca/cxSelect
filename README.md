@@ -96,11 +96,11 @@ cxSelectApi.setOptions();
 ## 参数说明
 名称|默认值|说明
 ---|---|---
-selects|[]|下拉选框组。输入 select 的 className
-url|null|整合数据接口地址（URL）；每个选框的内容使用各自的接口地址，详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
+selects|[]|下拉选框组。<br>输入 select 的 className
+url|null|整合数据接口地址（URL）；<br>每个选框的内容使用各自的接口地址，详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
 data|null|自定义数据，类型为数组，使用 JSON 格式。[DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
-emptyStyle|null|子集无数据时 select 元素的显示状态。可设置为：**"none"**(display:none), **"hidden"**(visibility:hidden)
-required|false|是否为必选。设为 `false` 时，会在列表头部添加 `<option value="firstValue">firstTitle</option>` 选项。
+emptyStyle|null|子集无数据时 select 元素的显示状态。<br>可设置为：**"none"**(display:none), **"hidden"**(visibility:hidden)
+required|false|是否为必选。<br>设为 `false` 时，会在列表头部添加 `<option value="firstValue">firstTitle</option>` 选项。
 firstTitle|'请选择'|选框第一个项目的标题（仅在 `required` 为 `false` 时有效）
 firstValue|''|选框第一个项目的值（仅在 `required` 为 `false` 时有效）
 jsonSpace|''|数据命名空间
@@ -117,7 +117,7 @@ jsonSub|'s'|子集数据字段名称
 
 名称|说明
 ---|---
-data-selects|下拉选框组。输入 select 的 className，使用英文逗号分隔的字符串
+data-selects|下拉选框组。<br>输入 select 的 className，使用英文逗号分隔的字符串
 data-url|列表数据接口地址
 data-empty-style|子集无数据时 select 的显示状态
 data-required|是否为必选
@@ -149,10 +149,10 @@ data-json-value|数据值字段名称
 
 名称|说明
 ---|---
-attach()|绑定。调用时会自动进行绑定，用于使用detach解除绑定后，进行重新绑定。
-detach()|解除绑定。解除绑定后，不再具有联动效果。
-clear(index)|清空选项。清空第 index 个 select 自身及之后的 select 的选项（`index`: select 的序号，从 0 开始）
-setOptions(settings)|重新设置参数。（`settings`: 与调用时参数一致）
+attach()|绑定。<br>调用时会自动进行绑定，用于使用detach解除绑定后，进行重新绑定。
+detach()|解除绑定。<br>解除绑定后，不再具有联动效果。
+clear(index)|清空选项。<br>清空第 index 个 select 自身及之后的 select 的选项。<br>`index`: select 的序号，从 0 开始
+setOptions(settings)|重新设置参数。<br>`settings`: 与调用时参数一致
 
 ##自定义数据及使用纯数组数据
 可以使用任何类型的数据作为值，但最终都会被转化为文本。
