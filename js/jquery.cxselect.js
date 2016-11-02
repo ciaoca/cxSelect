@@ -1,8 +1,8 @@
 /*!
  * jQuery cxSelect
  * @name jquery.cxselect.js
- * @version 1.4.0
- * @date 2016-04-01
+ * @version 1.4.1
+ * @date 2016-11-02
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -252,21 +252,23 @@
     var _query = {};
     var _queryName;
     var _selectName;
+    var _selectValue;
 
     cxSelect.clear.call(self, index);
 
     // 使用独立接口
     if (typeof _dataUrl === 'string' && _dataUrl.length) {
-      if (_indexPrev >= 0) {
-        if (!self.selectArray[_indexPrev].val().length) {return};
+      if (index > 0) {
+        for (var i = 0, j = 1; i < index; i++, j++) {
+          _queryName = self.selectArray[j].data('queryName');
+          _selectName = self.selectArray[i].attr('name');
+          _selectValue = self.selectArray[i].val();
 
-        _queryName = _select.data('queryName');
-        _selectName = self.selectArray[_indexPrev].attr('name');
-
-        if (typeof _queryName === 'string' && _queryName.length) {
-          _query[_queryName] = self.selectArray[_indexPrev].val();
-        } else if (typeof _selectName === 'string' && _selectName.length) {
-          _query[_selectName] = self.selectArray[_indexPrev].val();
+          if (typeof _queryName === 'string' && _queryName.length) {
+            _query[_queryName] = _selectValue;
+          } else if (typeof _selectName === 'string' && _selectName.length) {
+            _query[_selectName] = _selectValue;
+          };
         };
       };
 
