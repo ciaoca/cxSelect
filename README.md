@@ -145,7 +145,7 @@ data-json-space|数据命名空间
 data-json-name|数据标题字段名称
 data-json-value|数据值字段名称
 
-##API 接口
+## API 接口
 
 名称|说明
 ---|---
@@ -154,13 +154,13 @@ detach()|解除绑定。<br>解除绑定后，不再具有联动效果。
 clear(index)|清空选项。<br>清空第 index 个 select 自身及之后的 select 的选项。<br>`index`: select 的序号，从 0 开始
 setOptions(settings)|重新设置参数。<br>`settings`: 与调用时参数一致
 
-##自定义数据及使用纯数组数据
+## 自定义数据及使用纯数组数据
 可以使用任何类型的数据作为值，但最终都会被转化为文本。
 
 [自定义数据 DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
 
 
-##各选项数据接口独立
+## 各选项数据接口独立
 可以为每个```select```设置一个接口，根据接口返回的数据结构，设置```json-space```、```json-name```、```json-value```适应 JSON 结构（包括纯数组）。
 当页面加载时，第一个选框已有选项数据，可以不设置第一个选框的接口。
 
