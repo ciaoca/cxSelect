@@ -15,9 +15,9 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 * jQuery v1.7+ | Zepto v1.0+
 * jQuery cxSelect v1.4.2
 
-文档：http://code.ciaoca.com/jquery/cxselect/
+文档：http://code.ciaoca.com/jquery/cxSelect/
 
-示例：http://code.ciaoca.com/jquery/cxselect/demo/
+示例：http://code.ciaoca.com/jquery/cxSelect/demo/
 
 ## 使用方法
 ### 载入 JavaScript 文件
