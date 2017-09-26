@@ -2,7 +2,7 @@
  * jQuery cxSelect
  * @name jquery.cxselect.js
  * @version 1.4.2
- * @date 2016-02-27
+ * @date 2017-09-26
  * @author ciaoca
  * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxSelect
@@ -229,7 +229,7 @@
 
     if (self.settings.data || (typeof self.selectArray[0].data('url') === 'string' && self.selectArray[0].data('url').length)) {
       cxSelect.getOptionData.call(self, 0);
-    } else if (self.selectArray[0][0].options.length && typeof self.selectArray[0].attr('data-value') === 'string') {
+    } else if (self.selectArray[0][0].options.length && typeof self.selectArray[0].attr('data-value') === 'string' && self.selectArray[0].data('data-value').length) {
       self.selectArray[0].val(self.selectArray[0].attr('data-value'));
       cxSelect.getOptionData.call(self, 1);
     } else {
