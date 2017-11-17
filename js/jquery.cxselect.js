@@ -333,10 +333,13 @@
       };
     };
 
-    _select.html(_html).prop('disabled', false).css({
-      'display': '',
-      'visibility': ''
-    });
+     _select.html(_html);
+    if (data.length) {
+      _select.prop('disabled', false).css({
+        'display': '',
+        'visibility': ''
+      });
+    }
 
     // 初次加载设置默认值
     if (typeof _select.attr('data-value') === 'string') {
