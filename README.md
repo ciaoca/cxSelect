@@ -58,7 +58,7 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 ### 调用 cxSelect
 ``` javascript
 $('#element_id').cxSelect({
-  url: 'cityData.min.json'                // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
+  url: 'cityData.min.json',               // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
   selects: ['province', 'city', 'area'],  // selects 为数组形式，请注意顺序
   emptyStyle: 'none'
 });
