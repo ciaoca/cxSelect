@@ -97,8 +97,8 @@ cxSelectApi.setOptions();
 名称|默认值|说明
 ---|---|---
 selects|[]|下拉选框组。<br>输入 select 的 className
-url|null|整合数据接口地址（URL）；<br>每个选框的内容使用各自的接口地址，详见 [DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
-data|null|自定义数据，类型为数组，使用 JSON 格式。[DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
+url|null|整合数据接口地址（URL）；<br>每个选框的内容使用各自的接口地址，详见 [DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/oneself.html)
+data|null|自定义数据，类型为数组，使用 JSON 格式。[DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/custom.html)
 emptyStyle|null|子集无数据时 select 元素的显示状态。<br>可设置为：**"none"**(display:none), **"hidden"**(visibility:hidden)
 required|false|是否为必选。<br>设为 `false` 时，会在列表头部添加 `<option value="firstValue">firstTitle</option>` 选项。
 firstTitle|'请选择'|选框第一个项目的标题（仅在 `required` 为 `false` 时有效）
@@ -157,11 +157,11 @@ setOptions(settings)|重新设置参数。<br>`settings`: 与调用时参数一�
 ## 自定义数据及使用纯数组数据
 可以使用任何类型的数据作为值，但最终都会被转化为文本。
 
-[自定义数据 DEMO](http://code.ciaoca.com/jquery/cxselect/demo/custom.html)
+[自定义数据 DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/custom.html)
 
 
 ## 各选项数据接口独立
 可以为每个```select```设置一个接口，根据接口返回的数据结构，设置```json-space```、```json-name```、```json-value```适应 JSON 结构（包括纯数组）。
 当页面加载时，第一个选框已有选项数据，可以不设置第一个选框的接口。
 
-[独立接口 DEMO](http://code.ciaoca.com/jquery/cxselect/demo/oneself.html)
+[独立接口 DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/oneself.html)
