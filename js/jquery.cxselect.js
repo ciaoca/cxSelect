@@ -71,6 +71,31 @@
     return data;
   };
 
+  /**
+   * 
+   * xss 转义
+   * @param {string} str
+   * 需要转义的字符串
+   * @return
+   * 转义之后的字符串
+   */
+  cxSelect.xss = function (str) {
+    if (typeof str == 'string') {
+      str = str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\r\n/g, '<br>')
+        .replace(/\n/g, '<br>')
+        .replace(/\s/g, '&nbsp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+      return str;
+    } else {
+      return str + '';
+    }
+  }
+
   cxSelect.init = function(dom, settings) {
     var self = this;
 
@@ -313,7 +338,7 @@
 
     if (!$.isArray(data)) {return};
 
-    var _html = !_required ? '<option value="' + String(_firstValue) + '">' + String(_firstTitle) + '</option>' : '';
+    var _html = !_required ? '<option value="' + String(_firstValue) + '">' + cxSelect.xss(String(_firstTitle)) + '</option>' : '';
 
     // 区分标题、值的数据
     if (typeof _jsonName === 'string' && _jsonName.length) {
@@ -323,13 +348,13 @@
       };
 
       for (var i = 0, l = data.length; i < l; i++) {
-        _html += '<option value="' + String(data[i][_jsonValue]) + '">' + String(data[i][_jsonName]) + '</option>';
+        _html += '<option value="' + String(data[i][_jsonValue]) + '">' +  cxSelect.xss(String(data[i][_jsonName])) + '</option>';
       };
 
     // 数组即为值的数据
     } else {
       for (var i = 0, l = data.length; i < l; i++) {
-        _html += '<option value="' + String(data[i]) + '">' + String(data[i]) + '</option>';
+        _html += '<option value="' + String(data[i]) + '">' +  cxSelect.xss(String(data[i])) + '</option>';
       };
     };
 
