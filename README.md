@@ -8,12 +8,6 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 
 
 
-国内省市县数据来源：[2019年中华人民共和国行政区划代码（截止2019年12月31日）](http://www.mca.gov.cn/article/sj/xzqh/1980/202002/20200200025008.shtml)
-
-全球主要城市数据来源：整理国内常用网站和软件 Date: 2014.07.29
-
-
-
 **版本：**
 
 * jQuery v1.7+ | Zepto v1.0+
@@ -202,3 +196,23 @@ setOptions(settings)|重新设置参数。<br>`settings`: 与调用时参数一�
 当页面加载时，第一个选框已有选项数据，可以不设置第一个选框的接口。
 
 [独立接口 DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/oneself.html)
+
+
+
+## 数据来源
+
+`cityData.json`
+> 国内城市数据来源：[2019年中华人民共和国行政区划代码（截止2019年12月31日）](http://www.mca.gov.cn/article/sj/xzqh/1980/202002/20200200025008.shtml)
+
+
+
+`cityData-simple.json`
+> 国内城市简称版本
+> 不包含：
+> - 一级 省、市、区
+> - 二级 市、区、县、盟、州
+
+
+
+`globalData.json`
+> 全球主要城市数据来源：整理国内常用网站和软件 Date: 2014.07.29
