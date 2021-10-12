@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>cxSelect 联动下拉菜单 &raquo; 在线演示 - 前端开发仓库</title>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>cxSelect 联动下拉菜单</h1>
+  </div>
+</header>
+<div class="main">
+  <div class="wrap">
+    <nav>
+      <a href="index.html">常规示例</a>
+      <a href="api.html">API</a>
+      <a class="active" href="oneself.html">各选项数据独立</a>
+    </nav>
+
+    <h2>各选项数据独立</h2>
+
+    <blockquote>当每个选项使用各自的接口获取数据时，每次更改选择都会触发一次请求，请求时会传递已选择的值。<br>适合整合后的数据非常大、无法整合、以及未对数据整合的情况下使用。</blockquote>
+
+<p>配置示例</p>
+<pre>
+&lt;select class="province" name="province" data-url="province.php"&gt;&lt;/select&gt;
+&lt;select class="city" name="city" data-url="city.php" data-json-space="data"&gt;&lt;/select&gt;
+&lt;select class="area" name="area" data-url="area.php" data-json-space="data.list"&gt;&lt;/select&gt;
+
+&lt;scriptt&gt;
+$(dom).cxSelect({
+  selects: ['province', 'city', 'area'],
+  jsonName: 'name',
+  jsonValue: 'value',
+});
+&lt;/scriptt&gt;
+</pre>
+
+<p>1. 调用 cxSelect 时，将使用 get 的请求方式，通过第一个 select 的 data-url 属性设定的接口地址，获取省份数据。</p>
+<pre>
+// province.php
+[{"value":1,"name":"北京市"},{"value":2,"name":"上海市"},{"value":3,"name":"浙江省"},...]
+</pre>
+
+<p>2. 当选择省份为“浙江省”时，会请求省份后面一个 select 的 data-url（即：city.php），并传递省份所选择的值（例：city.php?province=3）。</p>
+<p>※ 默认取上一个 select 的 name 属性值作为参数名，也可以通过 data-query-name 来设置参数名。</p>
+
+<pre>
+// city.php?province=3
+// 由于城市数据放在 JSON 的 data 字段，所以需要通过 data-json-space="data" 设置命名空间。
+{"state":"success","data":[{"value":301,"name":"杭州市"},{"value":302,"name":"宁波市"},...]}
+</pre>
+
+<p>3. 当选择城市为“杭州市”时，也会传递对应参数，获取市区数据（例：area.php?city=301）。</p>
+
+<pre>
+// area.php?city=301
+// 市区数据层级更深，依然需要设置命名空间来获取，data-json-space="data.list" 以此类推更多层级。
+{"state":"success","data":{"list":[{"value":3101,"name":"上城区"},{"value":3102,"name":"下城区"},...]}}
+</pre>
+
+  </div>
+</div>
+
+</body>
+</html>

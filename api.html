@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>cxSelect 联动下拉菜单 &raquo; 在线演示 - 前端开发仓库</title>
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>cxSelect 联动下拉菜单</h1>
+  </div>
+</header>
+<div class="main">
+  <div class="wrap">
+    <nav>
+      <a href="index.html">常规示例</a>
+      <a class="active" href="api.html">API</a>
+      <a href="oneself.html">各选项数据独立</a>
+    </nav>
+
+    <h2>API</h2>
+
+    <fieldset id="api_data">
+      <legend>选择器组</legend>
+      <section>
+        <label>A:</label>
+        <select class="province select"></select>
+        <select class="city select"></select>
+        <select class="area select"></select>
+      </section>
+      <section>
+        <label>B:</label>
+        <select class="first select"></select>
+        <select class="second select"></select>
+        <select class="third select"></select>
+        <select class="fourth select"></select>
+        <select class="fifth select"></select>
+      </section>
+    </fieldset>
+
+    <fieldset id="acts">
+      <legend>操作</legend>
+      <section id="acts" class="acts">
+        <div class="group">
+          <a href="javascript://" rel="attach">attach</a>
+          <a href="javascript://" rel="detach">detach</a>
+          <a href="javascript://" rel="clear">clear</a>
+          <a href="javascript://" rel="setSelect" rev="b">更换选择器组</a>
+        </div>
+        <div class="group">
+          <a href="javascript://" rel="setData" rev="china">更换数据：国内数据</a>
+          <a href="javascript://" rel="setData" rev="global">更换数据：全球数据</a>
+          <a href="javascript://" rel="setData" rev="custom">更换数据：自定义数据</a>
+        </div>
+        <div class="group">
+          <a href="javascript://" rel="required" rev="0">切换：required</a>
+          <a href="javascript://" rel="emptyStyle" rev="">切换：emptyStyle</a>
+          <a href="javascript://" rel="firstTitle" rev="请选择">切换：firstTitle</a>
+        </div>
+      </section>
+    </fieldset>
+
+    <div class="about">
+      <section>
+        <h2>文档</h2>
+        <p><a target="_blank" href="https://github.com/ciaoca/cxSelect">Github</a></p>
+      </section>
+      <section>
+        <h2>作者</h2>
+        <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
+      </section>
+      <section>
+        <h2>协议</h2>
+        <p>Released under the MIT license</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- <script src="//cdn.staticfile.org/jquery/1.7.1/jquery.min.js"></script> -->
+<script src="//cdn.staticfile.org/zepto/1.0/zepto.min.js"></script>
+<script src="js/jquery.cxselect.js"></script>
+<script>
+(function() {
+  var urlChina = 'js/cityData.min.json';
+  var urlGlobal = 'js/globalData.min.json';
+  var dataCustom = [
+    {v: '1', n: '第一级 >', 's': [
+      {v: '2', n: '第二级 >', 's': [
+        {v: '3', n: '第三级 >', 's': [
+          {v: '4', n: '第四级 >', 's': [
+            {v: '5', n: '第五级 >', 's': [
+              {v: '6', n: '第六级 >'}
+            ]}
+          ]}
+        ]}
+      ]}
+    ]},
+    {v: 'number', n: '测试数字', 's': [
+      {v: 'text number', n: '文本类型', 's': [
+        {v: '4', n: '4'},
+        {v: '5', n: '5'},
+        {v: '6', n: '6'},
+        {v: '7', n: '7'},
+        {v: '8', n: '8'},
+        {v: '9', n: '9'},
+        {v: '10', n: '10'}
+      ]},
+      {v: 'int number', n: '数值类型', 's': [
+        {v: 11, n: 11},
+        {v: 12, n: 12},
+        {v: 13, n: 13},
+        {v: 14, n: 14},
+        {v: 15, n: 15},
+        {v: 16, n: 16},
+        {v: 17, n: 17}
+      ]}
+    ]},
+    {v: 'boolean',n: 'Boolean 类型', 's': [
+      {v: true ,n: true},
+      {v: false ,n: false}
+    ]},
+    {v: 'other', n: '奇怪的值', s: [
+      {v: [], n: '数组（空）'},
+      {v: [1,2,3], n: '数组（数值）'},
+      {v: ['a','b','c'], n: '数组（文本）'},
+      {v: new Date(), n: '日期'},
+      {v: new RegExp('\\d+'), n: '正则对象'},
+      {v: /\d+/, n: '正则直接量'},
+      {v: {}, n: '对象'},
+      {v: document.getElementById('custom_data'), n: 'DOM'},
+      {v: null, n: 'Null'},
+      {n: '未设置 value'}
+    ]},
+    {v: '' , n: '无子级'}
+  ];
+
+  $.cxSelect.defaults.url = urlChina;
+
+  // API 接口
+  var apiBox = $('#api_data');
+  var cxSelectApi;
+
+  apiBox.cxSelect({
+    selects: ['province', 'city', 'area']
+  }, function(api) {
+    cxSelectApi = api;
+  });
+
+  // cxSelectApi = $.cxSelect(apiBox, {
+  //   selects: ['province', 'city', 'area']
+  // });
+
+  $('#acts').on('click', 'a', function() {
+    var _this = this;
+    var _rel = _this.rel;
+    var _rev = _this.rev;
+
+    switch (_rel) {
+      case 'attach':
+        cxSelectApi.attach();
+        break;
+
+      case 'detach':
+        cxSelectApi.detach();
+        break;
+
+      case 'clear':
+        cxSelectApi.clear();
+        break;
+
+      case 'required':
+        cxSelectApi.setOptions({
+          required: _rev == 1 ? false : true
+        });
+
+        _this.rev = _rev == 1 ? 0 : 1;
+        break;
+
+      case 'emptyStyle':
+        if (_rev === 'none') {
+          _rev = '';
+        } else {
+          _rev = 'none';
+        };
+
+        cxSelectApi.setOptions({
+          emptyStyle: _rev
+        });
+
+        _this.rev = _rev;
+        break;
+
+      case 'firstTitle':
+        _rev = _rev === '请选择' ? '选择吧' : '请选择';
+
+        cxSelectApi.setOptions({
+          firstTitle: _rev
+        });
+
+        _this.rev = _rev;
+        break;
+
+      case 'setSelect':
+        cxSelectApi.setOptions({
+          selects: _rev === 'a' ? ['province', 'city', 'area'] : ['first', 'second', 'third', 'fourth', 'fifth']
+        });
+
+        _this.rev = _rev === 'a' ? 'b' : 'a';
+        break;
+
+      case 'setData':
+        if (_rev === 'china' || _rev === 'global') {
+          cxSelectApi.setOptions({
+            url: _rev === 'china' ? urlChina : urlGlobal,
+          });
+
+          // 或者通过接口获取数据后用 data 替换
+          // $.ajax({
+          //   url: _rev === 'china' ? urlChina : urlGlobal,
+          //   type: 'GET',
+          //   dataType: 'json'
+          // }).done(function(data, textStatus, jqXHR) {
+          //   cxSelectApi.setOptions({
+          //     data: data
+          //   });
+          // });
+
+        } else if (_rev === 'custom') {
+          cxSelectApi.setOptions({
+            data: dataCustom
+          });
+        };
+        break;
+
+      // not default
+    };
+  });
+})();
+</script>
+</body>
+</html>

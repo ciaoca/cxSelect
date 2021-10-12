@@ -7,19 +7,11 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 同时兼容 Zepto，方便在移动端使用。
 
 
-
 **版本：**
-
-* jQuery v1.7+ | Zepto v1.0+
+* jQuery v1.7+ || Zepto v1.0+
 * jQuery cxSelect v1.4.2
 
-
-
-文档：http://code.ciaoca.com/jquery/cxSelect/
-
-示例：http://code.ciaoca.com/jquery/cxSelect/demo/
-
-
+Demo: http://ciaoca.github.io/cxSelect/
 
 ## 使用方法
 
@@ -28,8 +20,6 @@ cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品
 <script src="jquery.js"></script>
 <script src="jquery.cxselect.js"></script>
 ```
-
-
 
 #### DOM 结构
 
@@ -44,8 +34,6 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
   <select class="area"></select>
 </div>
 ```
-
-
 
 #### 设置默认值
 
@@ -64,28 +52,22 @@ select 的 class 任意取值，也可以附加多个 class，如 class="provinc
 <select class="province" data-value="浙江省"></select> 
 ```
 
-
-
 #### 调用 cxSelect
 
 ``` javascript
 $('#element_id').cxSelect({
-  url: 'cityData.min.json',               // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
+  url: 'cityData.min.json',
   selects: ['province', 'city', 'area'],  // selects 为数组形式，请注意顺序
   emptyStyle: 'none'
 });
 ```
 
-
-
 #### 设置参数全局默认值
 
 ``` javascript
-// 需在引入 <script src="jquery.cxselect.js"></script> 之后，调用之前设置
 $.cxSelect.defaults.url = 'cityData.min.json';
 $.cxSelect.defaults.emptyStyle = 'none';
 ```
-
 
 
 ## 参数说明
@@ -93,10 +75,10 @@ $.cxSelect.defaults.emptyStyle = 'none';
 名称|默认值|说明
 ---|---|---
 selects|[]|下拉选框组。<br>输入 select 的 className
-url|null|整合数据接口地址（URL）；<br>每个选框的内容使用各自的接口地址，详见 [DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/oneself.html)
-data|null|自定义数据，类型为数组，使用 JSON 格式。[DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/custom.html)
+url|null|整合数据接口地址（URL）
+data|null|自定义数据，类型为数组，使用 JSON 格式。
 emptyStyle|null|子集无数据时 select 元素的显示状态。<br>可设置为：**"none"**(display:none), **"hidden"**(visibility:hidden)
-required|false|是否为必选。<br>设为 `false` 时，会在列表头部添加 `<option value="firstValue">firstTitle</option>` 选项。
+required|false|是否为必选。<br>设为 `false` 时，会在列表头部添加 `<option value="{firstValue}">{firstTitle}</option>` 选项。
 firstTitle|'请选择'|选框第一个项目的标题（仅在 `required` 为 `false` 时有效）
 firstValue|''|选框第一个项目的值（仅在 `required` 为 `false` 时有效）
 jsonSpace|''|数据命名空间
@@ -127,7 +109,6 @@ data-json-value|数据值字段名称
 data-json-sub|子集数据字段名称
 
 
-
 #### select 元素的 data- 属性
 
 ```html
@@ -137,7 +118,7 @@ data-json-sub|子集数据字段名称
 名称|说明
 ---|---
 data-value|默认选中值
-data-url|列表数据接口地址
+data-url|当前选框的数据接口，详见 [DEMO](http://ciaoca.github.io/cxSelect/oneself.html)
 data-required|是否为必选
 data-query-name|传递上一个选框值的参数名称（默认使用上一个选框的 name 属性值）
 data-first-title|选框第一个项目的标题
@@ -171,8 +152,6 @@ cxSelectApi.clear();
 cxSelectApi.setOptions();
 ```
 
-
-
 名称|说明
 ---|---
 attach()|绑定。<br>调用时会自动进行绑定，用于使用 detach 解除绑定后，进行重新绑定。
@@ -182,20 +161,18 @@ setOptions(settings)|重新设置参数。<br>`settings`: 与调用时参数一�
 
 
 
-## 自定义数据及使用纯数组数据
+## 自定义数据
 
 可以使用任何类型的数据作为值，但最终都会被转化为文本。
-
-[自定义数据 DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/custom.html)
 
 
 
 ## 各选项数据接口独立
 
-可以为每个```select```设置一个接口，根据接口返回的数据结构，设置```json-space```、```json-name```、```json-value```适应 JSON 结构（包括纯数组）。
+可以为每个`select`设置一个接口，根据接口返回的数据结构，设置`json-space`、`json-name`、`json-value`适应 JSON 结构。
 当页面加载时，第一个选框已有选项数据，可以不设置第一个选框的接口。
 
-[独立接口 DEMO](http://code.ciaoca.com/jquery/cxSelect/demo/oneself.html)
+[独立接口示例](http://ciaoca.github.io/cxSelect/oneself.html)
 
 
 
@@ -204,15 +181,11 @@ setOptions(settings)|重新设置参数。<br>`settings`: 与调用时参数一�
 `cityData.json`
 > 国内城市数据来源：[2019年中华人民共和国行政区划代码（截止2019年12月31日）](http://www.mca.gov.cn/article/sj/xzqh/1980/202002/20200200025008.shtml)
 
-
-
 `cityData-simple.json`
 > 国内城市简称版本
 > 不包含：
 > - 一级 省、市、区
 > - 二级 市、区、县、盟、州
-
-
 
 `globalData.json`
 > 全球主要城市数据来源：整理国内常用网站和软件 Date: 2014.07.29
