@@ -1,4 +1,4 @@
-# jQuery cxSelect
+# cxSelect
 
 cxSelect 是基于 jQuery 的多级联动菜单插件，适用于省市、商品分类等联动菜单。
 
