@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>cxSelect 联动下拉菜单 &raquo; 在线演示 - 前端开发仓库</title>
+<link rel="stylesheet" href="../css/demo.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>cxSelect 联动下拉菜单</h1>
+  </div>
+</header>
+<div class="main">
+  <div class="wrap">
+    <nav>
+      <a class="active" href="index.html">常规示例</a>
+      <a href="api.html">API</a>
+      <a href="oneself.html">各选项数据独立</a>
+    </nav>
+
+    <h2>示例</h2>
+
+    <fieldset id="city_china">
+      <legend>默认</legend> 
+      <section>
+        <select class="province other">
+          <option>请选择</option>
+        </select>
+        <select class="city">
+          <option>请选择</option>
+        </select>
+        <select class="area">
+          <option>请选择</option>
+        </select>
+      </section>
+    </fieldset>
+
+    <fieldset id="city_china_val">
+      <legend>设置默认值及选项标题</legend>
+      <section>
+        <select class="province other" data-first-title="选择省">
+          <option value="">请选择</option>
+          <option value="浙江省" selected>浙江省</option>
+        </select>
+        <select class="city" data-first-title="选择市">
+          <option value="">请选择</option>
+          <option value="杭州市" selected>杭州市</option>
+        </select>
+        <select class="area" data-first-title="选择地区">
+          <option value="">请选择</option>
+          <option value="西湖区" selected>西湖区</option>
+        </select>
+      </section>
+    </fieldset>
+
+    <fieldset id="global_location">
+      <legend>全球常见国家城市联动</legend>
+      <section>
+        <select class="country" data-first-title="选择国家"></select>
+        <select class="state" data-required="true"></select>
+        <select class="city" data-required="true"></select>
+        <select class="region" data-required="true"></select>
+      </section>
+    </fieldset>
+
+    <fieldset id="custom_data">
+      <legend>自定义数据</legend>
+      <blockquote>值可以设置为任意类型，但最终都会被转化为字符串。</blockquote>
+      <section>
+        <label>1.</label>
+        <select class="first"></select>
+      </section>
+      <section>
+        <label>2.</label>
+        <select class="second"></select>
+      </section>
+      <section>
+        <label>3.</label>
+        <select class="third"></select>
+      </section>
+      <section>
+        <label>4.</label>
+        <select class="fourth"></select>
+      </section>
+      <section>
+        <label>5.</label>
+        <select class="fifth"></select>
+      </section>
+    </fieldset>
+
+    <div class="about">
+      <section>
+        <h2>文档</h2>
+        <p><a target="_blank" href="https://github.com/ciaoca/cxSelect">Github</a></p>
+      </section>
+      <section>
+        <h2>作者</h2>
+        <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
+      </section>
+      <section>
+        <h2>协议</h2>
+        <p>Released under the MIT license</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- <script src="//cdn.staticfile.org/jquery/1.7.1/jquery.min.js"></script> -->
+<script src="//cdn.staticfile.org/zepto/1.0/zepto.min.js"></script>
+<script src="../js/jquery.cxselect.js"></script>
+<script>
+(function() {
+  var urlChina = '../js/cityData.min.json';
+  var urlGlobal = '../js/globalData.min.json';
+  var dataCustom = [
+    {v: '1', n: '第一级 >', 's': [
+      {v: '2', n: '第二级 >', 's': [
+        {v: '3', n: '第三级 >', 's': [
+          {v: '4', n: '第四级 >', 's': [
+            {v: '5', n: '第五级 >', 's': [
+              {v: '6', n: '第六级 >'}
+            ]}
+          ]}
+        ]}
+      ]}
+    ]},
+    {v: 'number', n: '测试数字', 's': [
+      {v: 'text number', n: '文本类型', 's': [
+        {v: '4', n: '4'},
+        {v: '5', n: '5'},
+        {v: '6', n: '6'},
+        {v: '7', n: '7'},
+        {v: '8', n: '8'},
+        {v: '9', n: '9'},
+        {v: '10', n: '10'}
+      ]},
+      {v: 'int number', n: '数值类型', 's': [
+        {v: 11, n: 11},
+        {v: 12, n: 12},
+        {v: 13, n: 13},
+        {v: 14, n: 14},
+        {v: 15, n: 15},
+        {v: 16, n: 16},
+        {v: 17, n: 17}
+      ]}
+    ]},
+    {v: 'boolean',n: 'Boolean 类型', 's': [
+      {v: true ,n: true},
+      {v: false ,n: false}
+    ]},
+    {v: 'other', n: '奇怪的值', s: [
+      {v: [], n: '数组（空）'},
+      {v: [1,2,3], n: '数组（数值）'},
+      {v: ['a','b','c'], n: '数组（文本）'},
+      {v: new Date(), n: '日期'},
+      {v: new RegExp('\\d+'), n: '正则对象'},
+      {v: /\d+/, n: '正则直接量'},
+      {v: {}, n: '对象'},
+      {v: document.getElementById('custom_data'), n: 'DOM'},
+      {v: null, n: 'Null'},
+      {n: '未设置 value'}
+    ]},
+    {v: '' , n: '无子级'}
+  ];
+
+  $.cxSelect.defaults.url = urlChina;
+
+  // 默认
+  $('#city_china').cxSelect({
+    selects: ['province', 'city', 'area']
+  });
+
+  // 设置默认值及选项标题
+  $('#city_china_val').cxSelect({
+    selects: ['province', 'city', 'area'],
+    emptyStyle: 'none'
+  });
+
+  // 全球常见国家城市联动
+  $('#global_location').cxSelect({
+    url: urlGlobal,
+    selects: ['country', 'state', 'city', 'region'],
+    emptyStyle: 'none'
+  });
+
+  // 自定义选项
+  $('#custom_data').cxSelect({
+    selects: ['first', 'second', 'third', 'fourth', 'fifth'],
+    // required: true,
+    jsonValue: 'v',
+    data: dataCustom
+  });
+})();
+</script>
+</body>
+</html>
