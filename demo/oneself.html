@@ -23,6 +23,16 @@
 
     <blockquote>当每个选项使用各自的接口获取数据时，每次更改选择都会触发一次请求，请求时会传递已选择的值。<br>适合整合后的数据非常大、无法整合、以及未对数据整合的情况下使用。</blockquote>
 
+    <fieldset id="self_data">
+      <legend>选择器组</legend>
+      <section>
+        <select class="province select" name="province" data-url="json/province.json"></select>
+        <select class="city select" name="city" data-url="json/city.json" data-json-space="data"></select>
+        <select class="area select" name="area" data-url="json/area.json" data-json-space="data.list"></select>
+      </section>
+      <section>
+    </fieldset>
+
 <p>配置示例</p>
 <pre>
 &lt;select class="province" name="province" data-url="province.php"&gt;&lt;/select&gt;
@@ -64,5 +74,18 @@ $(dom).cxSelect({
   </div>
 </div>
 
+<!-- <script src="//cdn.staticfile.org/jquery/1.7.1/jquery.min.js"></script> -->
+<script src="//cdn.staticfile.org/zepto/1.0/zepto.min.js"></script>
+<script src="../js/jquery.cxselect.js"></script>
+<script>
+(function() {
+  // 默认
+  $('#self_data').cxSelect({
+    selects: ['province', 'city', 'area'],
+    jsonName: 'name',
+    jsonValue: 'value',
+  });
+})();
+</script>
 </body>
 </html>
