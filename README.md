@@ -118,7 +118,7 @@ data-json-sub|子集数据字段名称
 名称|说明
 ---|---
 data-value|默认选中值
-data-url|当前选框的数据接口，详见 [DEMO](http://ciaoca.github.io/cxSelect/oneself.html)
+data-url|当前选框的数据接口，详见 [DEMO](http://ciaoca.github.io/cxSelect/demo/oneself.html)
 data-required|是否为必选
 data-query-name|传递上一个选框值的参数名称（默认使用上一个选框的 name 属性值）
 data-first-title|选框第一个项目的标题
@@ -172,7 +172,7 @@ setOptions(settings)|重新设置参数。<br>`settings`: 与调用时参数一�
 可以为每个`select`设置一个接口，根据接口返回的数据结构，设置`json-space`、`json-name`、`json-value`适应 JSON 结构。
 当页面加载时，第一个选框已有选项数据，可以不设置第一个选框的接口。
 
-[独立接口示例](http://ciaoca.github.io/cxSelect/oneself.html)
+[独立接口示例](http://ciaoca.github.io/cxSelect/demo/oneself.html)
 
 
 
